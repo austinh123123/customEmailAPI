@@ -1,0 +1,98 @@
+<TrustFrameworkPolicy xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" PolicySchemaVersion="0.3.0.0"
+    TenantId="{settings:Tenant}" PolicyId="B2C_1A_SignInSignUp"
+    PublicPolicyUri="http://{settings:Tenant}/B2C_1A_SignInSignUp" DeploymentMode="Development"
+    UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights">
+    <BasePolicy>
+        <TenantId>{settings:Tenant}</TenantId>
+        <PolicyId>B2C_1A_PolicyBase</PolicyId>
+    </BasePolicy>
+
+
+    <!-- Begin Manual Modifications -->   
+    <BuildingBlocks>
+        <ClaimsTransformations>
+            <!--This builds the json request to the email API-->
+            <ClaimsTransformation Id="Send_Email_OTP_SignIn_BuildRequestBody"
+                TransformationMethod="GenerateJson">
+                <InputClaims>
+                    <!-- do not change these two input claims -->
+                    <InputClaim ClaimTypeReferenceId="emailOTP"
+                        TransformationClaimType="personalizations.0.dynamic_template_data.otp" />
+                    <InputClaim ClaimTypeReferenceId="signInName"
+                        TransformationClaimType="personalizations.0.to.0.email" />
+                    <!-- you can add additional input claims if necessary, just make sure they are defined-->
+                </InputClaims>
+                <InputParameters>
+                    <!-- You can customize these -->
+                    <InputParameter Id="from.email" DataType="string"
+                        Value="info@gritsoftwaresystems.com" />
+                        <!-- Notice that this template changed from original -->
+                    <InputParameter Id="template_id" DataType="string"
+                        Value="d-fd6a1c8fd9f94c73a6db0cae7743478d" />
+                    <InputParameter Id="personalizations.0.dynamic_template_data.subject"
+                        DataType="string" Value="Email verification code" />
+                </InputParameters>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="emailRequestBody"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+        </ClaimsTransformations>
+    </BuildingBlocks> 
+    <ClaimsProviders>
+        <ClaimsProvider>
+            <DisplayName>Send_Email_OTP_SignIn</DisplayName>
+            <TechnicalProfiles>
+                <TechnicalProfile Id="Send_Email_OTP_SignIn">
+                    <DisplayName>Send_Email_OTP_SignIn</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <Metadata>
+                        <Item Key="ServiceUrl">{settings:EmailEndpoint}</Item>
+                        <Item Key="AuthenticationType">Bearer</Item>
+                        <Item Key="SendClaimsIn">Body</Item>
+                        <Item Key="ClaimUsedForRequestPayload">emailRequestBody</Item>
+                    </Metadata>
+                    <!--Make sure to include the correct secret-->
+                    <CryptographicKeys>
+                        <Key Id="BearerAuthenticationToken"
+                            StorageReferenceId="B2C_1A_SendGridSecret" />
+                    </CryptographicKeys>
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="emailRequestBody" DefaultValue="" />
+                    </InputClaims>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+        </TechnicalProfiles>
+        </ClaimsProvider>
+    </ClaimsProviders>
+    <!-- End Manual Modifications -->
+
+
+
+    <RelyingParty>
+        <DefaultUserJourney ReferenceId="userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8" />
+        <UserJourneyBehaviors>
+            <SingleSignOn Scope="Tenant" />
+            <SessionExpiryType>Absolute</SessionExpiryType>
+            <SessionExpiryInSeconds>900</SessionExpiryInSeconds>
+            <JourneyInsights TelemetryEngine="ApplicationInsights"
+                InstrumentationKey="{settings:applicationInsightsInstrumentationKey}"
+                DeveloperMode="true" ClientEnabled="{settings:applicationInsightsClientEnabled}"
+                ServerEnabled="true" TelemetryVersion="1.0.0" />
+            <ScriptExecution>Allow</ScriptExecution>
+        </UserJourneyBehaviors>
+        <TechnicalProfile Id="PolicyProfile">
+            <DisplayName>Policy Profile</DisplayName>
+            <Protocol Name="OpenIdConnect" />
+            <OutputClaims>
+                <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub" />
+                <OutputClaim ClaimTypeReferenceId="displayName" />
+                <OutputClaim ClaimTypeReferenceId="signInName" />
+            </OutputClaims>
+            <SubjectNamingInfo ClaimType="sub" />
+        </TechnicalProfile>
+    </RelyingParty>
+</TrustFrameworkPolicy>
