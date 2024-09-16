@@ -1,8 +1,8 @@
 <TrustFrameworkPolicy xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema" PolicySchemaVersion="0.3.0.0"
-    TenantId="{settings:Tenant}" PolicyId="B2C_1A_PolicyBase"
-    PublicPolicyUri="http://{settings:Tenant}/B2C_1A_PolicyBase">
+    TenantId="gptestb2corg.onmicrosoft.com" PolicyId="B2C_1A_PolicyBase"
+    PublicPolicyUri="http://gptestb2corg.onmicrosoft.com/B2C_1A_PolicyBase">
     <BuildingBlocks>
         <ClaimsSchema>
             <ClaimType Id="socialIdpUserId">
@@ -975,12 +975,12 @@
                     <Metadata>
                         <Item Key="Operation">Read</Item>
                         <Item Key="RaiseErrorIfClaimsPrincipalDoesNotExist">true</Item>
-                        <Item Key="ClientId">{settings:extensionsContainerClientId}</Item>
-                        <Item Key="ApplicationObjectId">{settings:extensionsContainerObjectId}</Item>
+                        <Item Key="ClientId">e98d96c4-633d-478f-9518-460918ad25c1</Item>
+                        <Item Key="ApplicationObjectId">e8f4092d-f8d6-493b-bb59-bc76299408ad</Item>
                     </Metadata>
                     <CryptographicKeys>
                         <Key Id="issuer_secret"
-                            StorageReferenceId="{settings:tokenSigningKeyContainer}" />
+                            StorageReferenceId="B2C_1A_TokenSigningKeyContainer" />
                     </CryptographicKeys>
                     <IncludeInSso>false</IncludeInSso>
                     <InputClaims>
@@ -1001,12 +1001,12 @@
                     <Metadata>
                         <Item Key="Operation">Read</Item>
                         <Item Key="RaiseErrorIfClaimsPrincipalDoesNotExist">false</Item>
-                        <Item Key="ClientId">{settings:extensionsContainerClientId}</Item>
-                        <Item Key="ApplicationObjectId">{settings:extensionsContainerObjectId}</Item>
+                        <Item Key="ClientId">e98d96c4-633d-478f-9518-460918ad25c1</Item>
+                        <Item Key="ApplicationObjectId">e8f4092d-f8d6-493b-bb59-bc76299408ad</Item>
                     </Metadata>
                     <CryptographicKeys>
                         <Key Id="issuer_secret"
-                            StorageReferenceId="{settings:tokenSigningKeyContainer}" />
+                            StorageReferenceId="B2C_1A_TokenSigningKeyContainer" />
                     </CryptographicKeys>
                     <IncludeInSso>false</IncludeInSso>
                     <InputClaims>
@@ -1214,9 +1214,9 @@
                     </Metadata>
                     <CryptographicKeys>
                         <Key Id="issuer_secret"
-                            StorageReferenceId="{settings:tokenSigningKeyContainer}" />
+                            StorageReferenceId="B2C_1A_TokenSigningKeyContainer" />
                         <Key Id="issuer_refresh_token_key"
-                            StorageReferenceId="{settings:tokenEncryptionKeyContainer}" />
+                            StorageReferenceId="B2C_1A_TokenEncryptionKeyContainer" />
                     </CryptographicKeys>
                     <UseTechnicalProfileForSessionManagement ReferenceId="SM-jwt-issuer" />
                 </TechnicalProfile>
