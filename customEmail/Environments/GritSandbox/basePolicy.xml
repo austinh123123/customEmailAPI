@@ -156,12 +156,65 @@
                 <UserInputType>Password</UserInputType>
                 <PredicateValidationReference Id="passwordComplexityValidation" />
             </ClaimType>
+            <ClaimType Id="BranchVar_0">
+                <DisplayName>Branch Variable 0</DisplayName>
+                <DataType>boolean</DataType>
+            </ClaimType>
+            <ClaimType Id="BranchVar_1">
+                <DisplayName>Branch Variable 1</DisplayName>
+                <DataType>boolean</DataType>
+            </ClaimType>
             <ClaimType Id="jexg_BooleanCopyDummy">
                 <DisplayName>Boolean Copy Dummy</DisplayName>
                 <DataType>boolean</DataType>
             </ClaimType>
-            <ClaimType Id="MFA_email_DisplayCopy">
-                <DisplayName>Email Address</DisplayName>
+            <ClaimType Id="grant_type_0">
+                <DisplayName>grant_type</DisplayName>
+                <DataType>string</DataType>
+            </ClaimType>
+            <ClaimType Id="scope_0">
+                <DisplayName>scope</DisplayName>
+                <DataType>string</DataType>
+            </ClaimType>
+            <ClaimType Id="nca_0">
+                <DisplayName>nca</DisplayName>
+                <DataType>string</DataType>
+            </ClaimType>
+            <ClaimType Id="client_id_0">
+                <DisplayName>client_id</DisplayName>
+                <DataType>string</DataType>
+            </ClaimType>
+            <ClaimType Id="resource_id_0">
+                <DisplayName>resource_id</DisplayName>
+                <DataType>string</DataType>
+            </ClaimType>
+            <ClaimType Id="strCmpBuffer">
+                <DisplayName>strCmpBuffer</DisplayName>
+                <DataType>string</DataType>
+            </ClaimType>
+            <ClaimType Id="estsRequestId">
+                <DisplayName>estsRequestId</DisplayName>
+                <DataType>string</DataType>
+            </ClaimType>
+            <ClaimType Id="authMethodsUsedForCA">
+                <DisplayName>authMethodsUsedForCA</DisplayName>
+                <DataType>stringCollection</DataType>
+            </ClaimType>
+            <ClaimType Id="verificationCode">
+                <DisplayName>verificationCode</DisplayName>
+                <DataType>string</DataType>
+                <UserInputType>TextBox</UserInputType>
+            </ClaimType>
+            <ClaimType Id="executed-SelfAsserted-Input">
+                <DisplayName>executed-SelfAsserted-Input</DisplayName>
+                <DataType>string</DataType>
+            </ClaimType>
+            <ClaimType Id="passwordPolicies_0">
+                <DisplayName>passwordPolicies</DisplayName>
+                <DataType>string</DataType>
+            </ClaimType>
+            <ClaimType Id="User_Input_Page_signInName_DisplayCopy">
+                <DisplayName>Sign in name</DisplayName>
                 <DataType>string</DataType>
                 <UserInputType>Readonly</UserInputType>
             </ClaimType>
@@ -172,15 +225,6 @@
             </ClaimType>
             <ClaimType Id="emailRequestBody">
                 <DisplayName>emailRequestBody</DisplayName>
-                <DataType>string</DataType>
-            </ClaimType>
-            <ClaimType Id="verificationCode">
-                <DisplayName>verificationCode</DisplayName>
-                <DataType>string</DataType>
-                <UserInputType>TextBox</UserInputType>
-            </ClaimType>
-            <ClaimType Id="executed-SelfAsserted-Input">
-                <DisplayName>executed-SelfAsserted-Input</DisplayName>
                 <DataType>string</DataType>
             </ClaimType>
         </ClaimsSchema>
@@ -219,17 +263,27 @@
             </PredicateValidation>
         </PredicateValidations>
         <ClaimsTransformations>
+            <ClaimsTransformation Id="Username_Password_Validation_makeAuthMethodsCollection"
+                TransformationMethod="AddItemToStringCollection">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="strCmpBuffer" TransformationClaimType="item" />
+                    <InputClaim ClaimTypeReferenceId="authMethodsUsedForCA"
+                        TransformationClaimType="collection" />
+                </InputClaims>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="authMethodsUsedForCA"
+                        TransformationClaimType="collection" />
+                </OutputClaims>
+            </ClaimsTransformation>
             <ClaimsTransformation Id="Email_MFA_BuildRequestBody"
                 TransformationMethod="GenerateJson">
                 <InputClaims>
                     <InputClaim ClaimTypeReferenceId="emailOTP"
                         TransformationClaimType="personalizations.0.dynamic_template_data.otp" />
-                    <InputClaim ClaimTypeReferenceId="email"
+                    <InputClaim ClaimTypeReferenceId="signInName"
                         TransformationClaimType="personalizations.0.to.0.email" />
                 </InputClaims>
                 <InputParameters>
-                    <InputParameter Id="personalizations.0.dynamic_template_data.languagecode"
-                        DataType="string" Value="En" />
                     <InputParameter Id="from.email" DataType="string"
                         Value="info@gritsoftwaresystems.com" />
                     <InputParameter Id="template_id" DataType="string"
@@ -245,42 +299,34 @@
             <ClaimsTransformation Id="EmailVerificationDisplayContol_CopybackXform"
                 TransformationMethod="CopyClaim">
                 <InputClaims>
-                    <InputClaim ClaimTypeReferenceId="MFA_email_DisplayCopy"
+                    <InputClaim ClaimTypeReferenceId="User_Input_Page_signInName_DisplayCopy"
                         TransformationClaimType="inputClaim" />
                 </InputClaims>
                 <OutputClaims>
-                    <OutputClaim ClaimTypeReferenceId="email" TransformationClaimType="outputClaim" />
-                </OutputClaims>
-            </ClaimsTransformation>
-            <ClaimsTransformation Id="MFA_signInName_email_PerformCopy"
-                TransformationMethod="CopyClaim">
-                <InputClaims>
-                    <InputClaim ClaimTypeReferenceId="signInName"
-                        TransformationClaimType="inputClaim" />
-                </InputClaims>
-                <OutputClaims>
-                    <OutputClaim ClaimTypeReferenceId="email" TransformationClaimType="outputClaim" />
-                </OutputClaims>
-            </ClaimsTransformation>
-            <ClaimsTransformation Id="MFA_signInName_l_DisplayC_PerformCopy"
-                TransformationMethod="CopyClaim">
-                <InputClaims>
-                    <InputClaim ClaimTypeReferenceId="signInName"
-                        TransformationClaimType="inputClaim" />
-                </InputClaims>
-                <OutputClaims>
-                    <OutputClaim ClaimTypeReferenceId="MFA_email_DisplayCopy"
+                    <OutputClaim ClaimTypeReferenceId="signInName"
                         TransformationClaimType="outputClaim" />
                 </OutputClaims>
             </ClaimsTransformation>
-            <ClaimsTransformation Id="MFA_Email_Verification_Display_Refill"
+            <ClaimsTransformation Id="User_Input_Page_signInName_User_Input_PerformCopy"
                 TransformationMethod="CopyClaim">
                 <InputClaims>
-                    <InputClaim ClaimTypeReferenceId="MFA_email_DisplayCopy"
+                    <InputClaim ClaimTypeReferenceId="signInName"
                         TransformationClaimType="inputClaim" />
                 </InputClaims>
                 <OutputClaims>
-                    <OutputClaim ClaimTypeReferenceId="email" TransformationClaimType="outputClaim" />
+                    <OutputClaim ClaimTypeReferenceId="User_Input_Page_signInName_DisplayCopy"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="User_Input_Page_Email_Verification_Display_Refill"
+                TransformationMethod="CopyClaim">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="User_Input_Page_signInName_DisplayCopy"
+                        TransformationClaimType="inputClaim" />
+                </InputClaims>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="signInName"
+                        TransformationClaimType="outputClaim" />
                 </OutputClaims>
             </ClaimsTransformation>
         </ClaimsTransformations>
@@ -889,15 +935,45 @@
             <DisplayControl Id="EmailValidationDisplayControl0"
                 UserInterfaceControlType="VerificationControl">
                 <InputClaims>
-                    <InputClaim ClaimTypeReferenceId="MFA_email_DisplayCopy" Required="true" />
+                    <InputClaim ClaimTypeReferenceId="signInName" Required="true" />
                 </InputClaims>
                 <DisplayClaims>
-                    <DisplayClaim ClaimTypeReferenceId="MFA_email_DisplayCopy" Required="true" />
+                    <DisplayClaim ClaimTypeReferenceId="signInName" Required="true" />
                     <DisplayClaim ClaimTypeReferenceId="verificationCode"
                         ControlClaimType="VerificationCode" Required="true" />
                 </DisplayClaims>
                 <OutputClaims>
-                    <OutputClaim ClaimTypeReferenceId="MFA_email_DisplayCopy" />
+                    <OutputClaim ClaimTypeReferenceId="signInName" />
+                </OutputClaims>
+                <Actions>
+                    <Action Id="SendCode">
+                        <ValidationClaimsExchange>
+                            <ValidationClaimsExchangeTechnicalProfile
+                                TechnicalProfileReferenceId="SendEmailVerificationCodeSSPRProfile5" />
+                        </ValidationClaimsExchange>
+                    </Action>
+                    <Action Id="VerifyCode">
+                        <ValidationClaimsExchange>
+                            <ValidationClaimsExchangeTechnicalProfile
+                                TechnicalProfileReferenceId="VerifyEmailVerificationCodeSSPRProfile6" />
+                        </ValidationClaimsExchange>
+                    </Action>
+                </Actions>
+            </DisplayControl>
+            <DisplayControl Id="EmailValidationDisplayControl1"
+                UserInterfaceControlType="VerificationControl">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="User_Input_Page_signInName_DisplayCopy"
+                        Required="true" />
+                </InputClaims>
+                <DisplayClaims>
+                    <DisplayClaim ClaimTypeReferenceId="User_Input_Page_signInName_DisplayCopy"
+                        Required="true" />
+                    <DisplayClaim ClaimTypeReferenceId="verificationCode"
+                        ControlClaimType="VerificationCode" Required="true" />
+                </DisplayClaims>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="User_Input_Page_signInName_DisplayCopy" />
                 </OutputClaims>
                 <Actions>
                     <Action Id="SendCode">
@@ -958,6 +1034,10 @@
                     <Protocol Name="Proprietary"
                         Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
                     <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_0" DefaultValue="false"
+                            AlwaysUseDefaultValue="true" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_1" DefaultValue="false"
+                            AlwaysUseDefaultValue="true" />
                         <OutputClaim ClaimTypeReferenceId="jexg_BooleanCopyDummy"
                             DefaultValue="true" AlwaysUseDefaultValue="true" />
                     </OutputClaims>
@@ -966,15 +1046,144 @@
             </TechnicalProfiles>
         </ClaimsProvider>
         <ClaimsProvider>
+            <DisplayName>Local Account SignIn</DisplayName>
+            <TechnicalProfiles>
+                <TechnicalProfile Id="Username_Password_Validation">
+                    <DisplayName>Username Password Validation</DisplayName>
+                    <Protocol Name="OpenIdConnect" />
+                    <Metadata>
+                        <Item Key="UserMessageIfInvalidPassword">Username password is invalid.
+                            Please re-enter your credentials.</Item>
+                        <Item Key="UserMessageIfClaimsPrincipalDoesNotExist">Username password is
+                            invalid. Please re-enter your credentials.</Item>
+                        <Item Key="ProviderName">https://sts.windows.net/</Item>
+                        <Item Key="METADATA">
+                            https://login.microsoftonline.com/{tenant}/.well-known/openid-configuration</Item>
+                        <Item Key="authorization_endpoint">
+                            https://login.microsoftonline.com/{tenant}/oauth2/token</Item>
+                        <Item Key="response_types">id_token</Item>
+                        <Item Key="response_mode">query</Item>
+                        <Item Key="scope">email openid</Item>
+                        <Item Key="UsePolicyInRedirectUri">false</Item>
+                        <Item Key="HttpBinding">POST</Item>
+                        <Item Key="client_id">4fd657d2-9232-45c7-9246-736ed750c162</Item>
+                        <Item Key="IdTokenAudience">f9b3b389-0b7a-4690-aa21-128bfd2b30af</Item>
+                    </Metadata>
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="signInName" DefaultValue=""
+                            PartnerClaimType="username" Required="true" />
+                        <InputClaim ClaimTypeReferenceId="password" DefaultValue="" Required="true" />
+                        <InputClaim ClaimTypeReferenceId="grant_type_0" DefaultValue="Password"
+                            AlwaysUseDefaultValue="true" PartnerClaimType="grant_type" />
+                        <InputClaim ClaimTypeReferenceId="scope_0" DefaultValue="openid"
+                            AlwaysUseDefaultValue="true" PartnerClaimType="scope" />
+                        <InputClaim ClaimTypeReferenceId="nca_0" DefaultValue="1"
+                            AlwaysUseDefaultValue="true" PartnerClaimType="nca" />
+                        <InputClaim ClaimTypeReferenceId="client_id_0"
+                            DefaultValue="4fd657d2-9232-45c7-9246-736ed750c162" AlwaysUseDefaultValue="true"
+                            PartnerClaimType="client_id" />
+                        <InputClaim ClaimTypeReferenceId="resource_id_0"
+                            DefaultValue="f9b3b389-0b7a-4690-aa21-128bfd2b30af" AlwaysUseDefaultValue="true"
+                            PartnerClaimType="resource" />
+                    </InputClaims>
+                    <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="objectId" DefaultValue=""
+                            PartnerClaimType="oid" />
+                        <OutputClaim ClaimTypeReferenceId="strCmpBuffer" DefaultValue="Password"
+                            AlwaysUseDefaultValue="true" />
+                        <OutputClaim ClaimTypeReferenceId="estsRequestId"
+                            DefaultValue="00000000-0000-0000-0000-000000000000"
+                            PartnerClaimType="estsRequestId" />
+                    </OutputClaims>
+                    <OutputClaimsTransformations>
+                        <OutputClaimsTransformation
+                            ReferenceId="Username_Password_Validation_makeAuthMethodsCollection" />
+                    </OutputClaimsTransformations>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+            </TechnicalProfiles>
+        </ClaimsProvider>
+        <ClaimsProvider>
+            <DisplayName>Local Account</DisplayName>
+            <TechnicalProfiles>
+                <TechnicalProfile Id="localAccountSignInProfile">
+                    <DisplayName>Local Account Signin</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <Metadata>
+                        <Item Key="setting.forgotPasswordLinkLocation">None</Item>
+                        <Item Key="setting.showSignupLink">false</Item>
+                        <Item Key="IncludeClaimResolvingInClaimsHandling">true</Item>
+                        <Item Key="ContentDefinitionReferenceId">api.localaccountsignin</Item>
+                        <Item Key="setting.enableRememberMe">True</Item>
+                        <Item Key="setting.operatingMode">Email</Item>
+                    </Metadata>
+                    <IncludeInSso>false</IncludeInSso>
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="signInName"
+                            DefaultValue="{OIDC:LoginHint}" AlwaysUseDefaultValue="true" />
+                    </InputClaims>
+                    <DisplayClaims>
+                        <DisplayClaim ClaimTypeReferenceId="signInName" Required="true" />
+                        <DisplayClaim ClaimTypeReferenceId="password" Required="true" />
+                    </DisplayClaims>
+                    <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="objectId" DefaultValue="" />
+                        <OutputClaim ClaimTypeReferenceId="authMethodsUsedForCA" />
+                        <OutputClaim ClaimTypeReferenceId="signInName" DefaultValue="" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_0" DefaultValue="true"
+                            AlwaysUseDefaultValue="true" />
+                    </OutputClaims>
+                    <ValidationTechnicalProfiles>
+                        <ValidationTechnicalProfile ReferenceId="Username_Password_Validation" />
+                    </ValidationTechnicalProfiles>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+            </TechnicalProfiles>
+        </ClaimsProvider>
+        <ClaimsProvider>
+            <DisplayName>AAD SSPR</DisplayName>
+            <TechnicalProfiles>
+                <TechnicalProfile Id="SendEmailVerificationCodeSSPRProfile5">
+                    <DisplayName>Send Code</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.AadSsprProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <Metadata>
+                        <Item Key="Operation">SendCode</Item>
+                    </Metadata>
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="signInName" DefaultValue=""
+                            PartnerClaimType="emailAddress" />
+                    </InputClaims>
+                </TechnicalProfile>
+                <TechnicalProfile Id="VerifyEmailVerificationCodeSSPRProfile6">
+                    <DisplayName>Verify Code</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.AadSsprProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <Metadata>
+                        <Item Key="Operation">VerifyCode</Item>
+                    </Metadata>
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="verificationCode" DefaultValue=""
+                            PartnerClaimType="verificationCode" />
+                        <InputClaim ClaimTypeReferenceId="signInName" DefaultValue=""
+                            PartnerClaimType="emailAddress" />
+                    </InputClaims>
+                </TechnicalProfile>
+            </TechnicalProfiles>
+        </ClaimsProvider>
+        <ClaimsProvider>
             <DisplayName>Azure Active Directory</DisplayName>
             <TechnicalProfiles>
-                <TechnicalProfile Id="AAD_Read">
-                    <DisplayName>AAD Read aadRead-a8c7</DisplayName>
+                <TechnicalProfile Id="AAD_Create">
+                    <DisplayName>AAD Create</DisplayName>
                     <Protocol Name="Proprietary"
                         Handler="Web.TPEngine.Providers.AzureActiveDirectoryProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
                     <Metadata>
-                        <Item Key="Operation">Read</Item>
-                        <Item Key="RaiseErrorIfClaimsPrincipalDoesNotExist">true</Item>
+                        <Item Key="Operation">Write</Item>
+                        <Item Key="RaiseErrorIfClaimsPrincipalAlreadyExists">true</Item>
+                        <Item Key="RaiseErrorIfClaimsPrincipalDoesNotExist">false</Item>
+                        <Item Key="UserMessageIfClaimsPrincipalAlreadyExists">User already exists</Item>
                         <Item Key="ClientId">e98d96c4-633d-478f-9518-460918ad25c1</Item>
                         <Item Key="ApplicationObjectId">e8f4092d-f8d6-493b-bb59-bc76299408ad</Item>
                     </Metadata>
@@ -985,16 +1194,24 @@
                     <IncludeInSso>false</IncludeInSso>
                     <InputClaims>
                         <InputClaim ClaimTypeReferenceId="signInName" DefaultValue=""
-                            PartnerClaimType="signInNames.emailAddress" />
+                            PartnerClaimType="signInNames.emailAddress" Required="true" />
                     </InputClaims>
-                    <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="objectId" DefaultValue="" />
-                        <OutputClaim ClaimTypeReferenceId="signInName" DefaultValue=""
+                    <PersistedClaims>
+                        <PersistedClaim ClaimTypeReferenceId="displayName" DefaultValue="unknown" />
+                        <PersistedClaim ClaimTypeReferenceId="password" DefaultValue="" />
+                        <PersistedClaim ClaimTypeReferenceId="signInName"
                             PartnerClaimType="signInNames.emailAddress" />
+                        <PersistedClaim ClaimTypeReferenceId="passwordPolicies_0"
+                            DefaultValue="DisablePasswordExpiration, DisableStrongPassword"
+                            PartnerClaimType="passwordPolicies" />
+                    </PersistedClaims>
+                    <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="objectId" DefaultValue=""
+                            PartnerClaimType="objectId" />
                     </OutputClaims>
                     <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
                 </TechnicalProfile>
-                <TechnicalProfile Id="AAD_Read_0">
+                <TechnicalProfile Id="AAD_Read">
                     <DisplayName>AAD Read aadRead-24e2</DisplayName>
                     <Protocol Name="Proprietary"
                         Handler="Web.TPEngine.Providers.AzureActiveDirectoryProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -1026,36 +1243,63 @@
             </TechnicalProfiles>
         </ClaimsProvider>
         <ClaimsProvider>
-            <DisplayName>Local Account</DisplayName>
+            <DisplayName>Self Asserted</DisplayName>
             <TechnicalProfiles>
-                <TechnicalProfile Id="localAccountSignInProfile">
-                    <DisplayName>Local Account Signin</DisplayName>
+                <TechnicalProfile Id="createNewAccount">
+                    <DisplayName>createNewAccount</DisplayName>
                     <Protocol Name="Proprietary"
                         Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
                     <Metadata>
-                        <Item Key="setting.forgotPasswordLinkLocation">None</Item>
-                        <Item Key="setting.showSignupLink">false</Item>
-                        <Item Key="IncludeClaimResolvingInClaimsHandling">true</Item>
-                        <Item Key="ContentDefinitionReferenceId">api.localaccountsignin</Item>
-                        <Item Key="setting.enableRememberMe">True</Item>
-                        <Item Key="setting.operatingMode">Email</Item>
+                        <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
                     </Metadata>
                     <IncludeInSso>false</IncludeInSso>
-                    <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="signInName"
-                            DefaultValue="{OIDC:LoginHint}" AlwaysUseDefaultValue="true" />
-                    </InputClaims>
                     <DisplayClaims>
-                        <DisplayClaim ClaimTypeReferenceId="signInName" Required="true" />
-                        <DisplayClaim ClaimTypeReferenceId="password" Required="true" />
+                        <DisplayClaim DisplayControlReferenceId="EmailValidationDisplayControl0" />
+                        <DisplayClaim ClaimTypeReferenceId="password" Required="false" />
+                        <DisplayClaim ClaimTypeReferenceId="displayName" Required="false" />
                     </DisplayClaims>
                     <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="objectId" DefaultValue="" />
+                        <OutputClaim ClaimTypeReferenceId="executed-SelfAsserted-Input"
+                            DefaultValue="true" />
                         <OutputClaim ClaimTypeReferenceId="signInName" DefaultValue="" />
+                        <OutputClaim ClaimTypeReferenceId="password" DefaultValue="" />
+                        <OutputClaim ClaimTypeReferenceId="displayName" DefaultValue="" />
+                        <OutputClaim ClaimTypeReferenceId="objectId" DefaultValue="" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_1" DefaultValue="true"
+                            AlwaysUseDefaultValue="true" />
                     </OutputClaims>
                     <ValidationTechnicalProfiles>
-                        <ValidationTechnicalProfile ReferenceId="AAD_Read" />
+                        <ValidationTechnicalProfile ReferenceId="AAD_Create" />
                     </ValidationTechnicalProfiles>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+                <TechnicalProfile Id="User_Input_Page">
+                    <DisplayName>User Input Page</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <Metadata>
+                        <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+                    </Metadata>
+                    <IncludeInSso>false</IncludeInSso>
+                    <InputClaimsTransformations>
+                        <InputClaimsTransformation
+                            ReferenceId="User_Input_Page_signInName_User_Input_PerformCopy" />
+                        <InputClaimsTransformation
+                            ReferenceId="User_Input_Page_Email_Verification_Display_Refill" />
+                    </InputClaimsTransformations>
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="User_Input_Page_signInName_DisplayCopy"
+                            DefaultValue="" />
+                        <InputClaim ClaimTypeReferenceId="signInName" DefaultValue="" />
+                    </InputClaims>
+                    <DisplayClaims>
+                        <DisplayClaim DisplayControlReferenceId="EmailValidationDisplayControl1" />
+                    </DisplayClaims>
+                    <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="executed-SelfAsserted-Input"
+                            DefaultValue="true" />
+                        <OutputClaim ClaimTypeReferenceId="signInName" DefaultValue="" />
+                    </OutputClaims>
                     <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
                 </TechnicalProfile>
             </TechnicalProfiles>
@@ -1063,15 +1307,15 @@
         <ClaimsProvider>
             <DisplayName>Claims Preparation</DisplayName>
             <TechnicalProfiles>
-                <TechnicalProfile Id="MFA_InitAdvanceClaims">
-                    <DisplayName>MFA</DisplayName>
+                <TechnicalProfile Id="User_Input_Page_InitAdvanceClaims">
+                    <DisplayName>User Input Page</DisplayName>
                     <Protocol Name="Proprietary"
                         Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
                     <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="email" DefaultValue="" />
+                        <InputClaim ClaimTypeReferenceId="signInName" DefaultValue="" />
                     </InputClaims>
                     <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="email" DefaultValue="" />
+                        <OutputClaim ClaimTypeReferenceId="signInName" DefaultValue="" />
                     </OutputClaims>
                     <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
                 </TechnicalProfile>
@@ -1094,7 +1338,7 @@
                         <Item Key="ReuseSameCode">false</Item>
                     </Metadata>
                     <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="email" DefaultValue=""
+                        <InputClaim ClaimTypeReferenceId="signInName" DefaultValue=""
                             PartnerClaimType="identifier" />
                     </InputClaims>
                     <OutputClaims>
@@ -1139,11 +1383,13 @@
                     <Protocol Name="Proprietary"
                         Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
                     <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="MFA_email_DisplayCopy" DefaultValue="" />
+                        <InputClaim ClaimTypeReferenceId="User_Input_Page_signInName_DisplayCopy"
+                            DefaultValue="" />
                     </InputClaims>
                     <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="MFA_email_DisplayCopy" DefaultValue="" />
-                        <OutputClaim ClaimTypeReferenceId="email" DefaultValue="" />
+                        <OutputClaim ClaimTypeReferenceId="User_Input_Page_signInName_DisplayCopy"
+                            DefaultValue="" />
+                        <OutputClaim ClaimTypeReferenceId="signInName" DefaultValue="" />
                     </OutputClaims>
                     <OutputClaimsTransformations>
                         <OutputClaimsTransformation
@@ -1158,45 +1404,11 @@
                         <Item Key="Operation">VerifyCode</Item>
                     </Metadata>
                     <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="MFA_email_DisplayCopy" DefaultValue=""
-                            PartnerClaimType="identifier" />
+                        <InputClaim ClaimTypeReferenceId="User_Input_Page_signInName_DisplayCopy"
+                            DefaultValue="" PartnerClaimType="identifier" />
                         <InputClaim ClaimTypeReferenceId="verificationCode" DefaultValue=""
                             PartnerClaimType="otpToVerify" />
                     </InputClaims>
-                </TechnicalProfile>
-            </TechnicalProfiles>
-        </ClaimsProvider>
-        <ClaimsProvider>
-            <DisplayName>Self Asserted</DisplayName>
-            <TechnicalProfiles>
-                <TechnicalProfile Id="MFA">
-                    <DisplayName>MFA</DisplayName>
-                    <Protocol Name="Proprietary"
-                        Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-                    <Metadata>
-                        <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
-                    </Metadata>
-                    <IncludeInSso>false</IncludeInSso>
-                    <InputClaimsTransformations>
-                        <InputClaimsTransformation ReferenceId="MFA_signInName_email_PerformCopy" />
-                        <InputClaimsTransformation
-                            ReferenceId="MFA_signInName_l_DisplayC_PerformCopy" />
-                        <InputClaimsTransformation
-                            ReferenceId="MFA_Email_Verification_Display_Refill" />
-                    </InputClaimsTransformations>
-                    <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="MFA_email_DisplayCopy" DefaultValue="" />
-                        <InputClaim ClaimTypeReferenceId="email" DefaultValue="" />
-                    </InputClaims>
-                    <DisplayClaims>
-                        <DisplayClaim DisplayControlReferenceId="EmailValidationDisplayControl0" />
-                    </DisplayClaims>
-                    <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="executed-SelfAsserted-Input"
-                            DefaultValue="true" />
-                        <OutputClaim ClaimTypeReferenceId="email" DefaultValue="" />
-                    </OutputClaims>
-                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
                 </TechnicalProfile>
             </TechnicalProfiles>
         </ClaimsProvider>
@@ -1237,6 +1449,8 @@
                     <ClaimsProviderSelections>
                         <ClaimsProviderSelection
                             ValidationClaimsExchangeId="localAccountSignInClaimsExchange" />
+                        <ClaimsProviderSelection
+                            TargetClaimsExchangeId="createNewAccount_ClaimsExchange_Precursor" />
                     </ClaimsProviderSelections>
                     <ClaimsExchanges>
                         <ClaimsExchange Id="localAccountSignInClaimsExchange"
@@ -1244,23 +1458,58 @@
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="3" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                            <Value>BranchVar_0</Value>
+                            <Value>True</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="MFA_AdvancePrepClaimsExchange"
-                            TechnicalProfileReferenceId="MFA_InitAdvanceClaims" />
+                        <ClaimsExchange Id="createNewAccount_ClaimsExchange_Precursor"
+                            TechnicalProfileReferenceId="createNewAccount" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="4" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                            <Value>BranchVar_0</Value>
+                            <Value>True</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="MFA_ClaimsExchange" TechnicalProfileReferenceId="MFA" />
+                        <ClaimsExchange Id="User_Input_Page_AdvancePrepClaimsExchange"
+                            TechnicalProfileReferenceId="User_Input_Page_InitAdvanceClaims" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="5" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                            <Value>BranchVar_0</Value>
+                            <Value>True</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="AAD_Read_ClaimsExchange"
-                            TechnicalProfileReferenceId="AAD_Read_0" />
+                        <ClaimsExchange Id="User_Input_Page_ClaimsExchange"
+                            TechnicalProfileReferenceId="User_Input_Page" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
-                <OrchestrationStep Order="6" Type="SendClaims"
+                <OrchestrationStep Order="6" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                            <Value>BranchVar_0</Value>
+                            <Value>True</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
+                    <ClaimsExchanges>
+                        <ClaimsExchange Id="AAD_Read_ClaimsExchange"
+                            TechnicalProfileReferenceId="AAD_Read" />
+                    </ClaimsExchanges>
+                </OrchestrationStep>
+                <OrchestrationStep Order="7" Type="SendClaims"
                     CpimIssuerTechnicalProfileReferenceId="jwtIssuer" />
             </OrchestrationSteps>
             <ClientDefinition ReferenceId="DefaultWeb" />

@@ -1,0 +1,1433 @@
+{
+    "nodeData": {
+        "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026": {
+            "id": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+            "componentType": "signIn",
+            "usernameType": "email",
+            "username": "signInName",
+            "keepMeSignedIn": "true",
+            "showPasswordTextbox": "true",
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "links": {
+                "forgotPassword": false,
+                "otp": false,
+                "createNewAccount": true,
+                "localAccountSignIn": true,
+                "socialProviders": {
+                    "employeeLogin": false,
+                    "facebook": false,
+                    "google": false,
+                    "discord": false,
+                    "linkedIn": false,
+                    "weChat": false
+                }
+            },
+            "formSubmitAction": {
+                "displayName": "action item signIn",
+                "id": "formsubmitaction-00df8c4b-ec27-b978-0dd7-e08d9bfe3da6"
+            },
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "contentDefinition": {
+                "value": "",
+                "templatized": false
+            },
+            "nodeLinks": []
+        },
+        "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd": {
+            "id": "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd",
+            "componentType": "userInputPage",
+            "attributes": [],
+            "attribute": {
+                "attributeName": "",
+                "readOnly": false,
+                "prefillValue": "fromAnotherAttribute",
+                "attributeSource": "",
+                "defaultValue": "",
+                "sessionContext": "{Culture:LanguageName}",
+                "required": false,
+                "repeatField": false
+            },
+            "validateEmail": false,
+            "email": {
+                "valEmailType": "newEmail",
+                "newEmail": {
+                    "attributeSource": "",
+                    "prefillValue": false
+                },
+                "valPrevEmail": {
+                    "emailAttribute": "",
+                    "editEmail": false
+                },
+                "expiryTime": 10,
+                "configureApi": {
+                    "value": false,
+                    "disabled": true
+                }
+            },
+            "formSubmitAction": {
+                "displayName": "",
+                "id": ""
+            },
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "parentNodeId": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+            "linkId": true,
+            "linkType": "localAccountSignIn",
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "contentDefinition": {
+                "value": "",
+                "templatized": false
+            }
+        },
+        "usernamePasswordValidation-6d5914f2-34bd-0874-2b84-a105c664ce80": {
+            "id": "usernamePasswordValidation-6d5914f2-34bd-0874-2b84-a105c664ce80",
+            "componentType": "usernamePasswordValidation",
+            "claim": "objectId",
+            "errorMsg": "Username password is invalid. Please re-enter your credentials.",
+            "usernameType": "email",
+            "username": "signInName",
+            "password": "password",
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "flowchart": "formsubmitaction-00df8c4b-ec27-b978-0dd7-e08d9bfe3da6",
+            "subflowParent": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026"
+        },
+        "aadRead-24e20228-6f4d-c189-860b-8b331978610d": {
+            "id": "aadRead-24e20228-6f4d-c189-860b-8b331978610d",
+            "componentType": "aadRead",
+            "indexProperty": {
+                "id": "objectid",
+                "dataType": "string",
+                "claim": "objectId"
+            },
+            "attributes": [
+                {
+                    "id": "givenName",
+                    "claim": "givenName"
+                },
+                {
+                    "id": "surname",
+                    "claim": "surname"
+                },
+                {
+                    "id": "displayName",
+                    "claim": "displayName"
+                },
+                {
+                    "id": "signInNames.emailAddress",
+                    "claim": "signInName"
+                }
+            ],
+            "attribute": {
+                "id": "",
+                "claim": ""
+            },
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "throwErrorIfNotFound": false,
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+        },
+        "aadCreate-c49e3025-b259-daa5-57f2-197afcbd9649": {
+            "id": "aadCreate-c49e3025-b259-daa5-57f2-197afcbd9649",
+            "componentType": "aadCreate",
+            "indexProperty": {
+                "id": "email",
+                "dataType": "string",
+                "claim": "signInName"
+            },
+            "attributes": [
+                {
+                    "id": "displayName",
+                    "claim": "displayName",
+                    "claimOrFunc": "Claim",
+                    "defaultValue": ""
+                },
+                {
+                    "id": "password",
+                    "claim": "password",
+                    "claimOrFunc": "Claim"
+                },
+                {
+                    "id": "givenName",
+                    "claim": "givenName",
+                    "claimOrFunc": "Claim",
+                    "defaultValue": ""
+                },
+                {
+                    "id": "surname",
+                    "claim": "surname",
+                    "claimOrFunc": "Claim",
+                    "defaultValue": ""
+                }
+            ],
+            "attribute": {
+                "id": "",
+                "claim": ""
+            },
+            "mapObjectId": true,
+            "mappedClaim": "objectId",
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "flowchart": "formsubmitaction-79a5e03b-13cf-ddae-f00b-f16f5e30f9b2",
+            "subflowParent": "createNewAccount-7961d4f9-2273-0f8d-f9fe-b9b9855a58ec"
+        },
+        "aadRead-cc593723-cf1c-4b1b-2014-afa881eb63d6": {
+            "id": "aadRead-cc593723-cf1c-4b1b-2014-afa881eb63d6",
+            "componentType": "aadRead",
+            "indexProperty": {
+                "id": "email",
+                "dataType": "string",
+                "claim": "signInName"
+            },
+            "attributes": [
+                {
+                    "id": "objectId",
+                    "claim": "objectId"
+                }
+            ],
+            "attribute": {
+                "id": "",
+                "claim": ""
+            },
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "throwErrorIfNotFound": true,
+            "errorMessage": "We could not locate your account. (Select createNewAccount from the initial sign-in menu to create an account.)",
+            "flowchart": "formsubmitaction-888fe2a6-b090-e0ef-d52b-fe8e352a39bb",
+            "subflowParent": "forgotPassword-c7c5948a-7961-d30d-6128-b2d9d10eef8b"
+        },
+        "tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e": {
+            "id": "tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e",
+            "componentType": "tokenIssuer",
+            "attributes": [
+                {
+                    "attributeName": "objectId",
+                    "defaultValue": "",
+                    "alwaysUseDefaultValue": false,
+                    "partnerClaimType": ""
+                },
+                {
+                    "attributeName": "givenName",
+                    "defaultValue": "",
+                    "alwaysUseDefaultValue": false,
+                    "partnerClaimType": ""
+                },
+                {
+                    "attributeName": "surname",
+                    "defaultValue": "",
+                    "alwaysUseDefaultValue": false,
+                    "partnerClaimType": ""
+                },
+                {
+                    "attributeName": "signInName",
+                    "defaultValue": "",
+                    "alwaysUseDefaultValue": false,
+                    "partnerClaimType": ""
+                }
+            ],
+            "attribute": {
+                "attributeName": "",
+                "defaultValue": "",
+                "alwaysUseDefaultValue": "",
+                "partnerClaimType": ""
+            },
+            "subClaim": "objectId",
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "issuerUri": {
+                "value": "",
+                "templatized": false
+            }
+        },
+        "aadUpdate-7d0cac62-f202-c755-b1f4-1f2076235b7b": {
+            "id": "aadUpdate-7d0cac62-f202-c755-b1f4-1f2076235b7b",
+            "componentType": "aadUpdate",
+            "indexProperty": {
+                "id": "objectid",
+                "dataType": "string",
+                "claim": "objectId"
+            },
+            "attributes": [
+                {
+                    "id": "password",
+                    "claim": "password"
+                }
+            ],
+            "attribute": {
+                "id": "",
+                "claim": ""
+            },
+            "mapObjectId": true,
+            "mappedClaim": "objectId",
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "flowchart": "formsubmitaction-eb75f189-0d2f-f4c6-f3e8-cf5a9a8f19f1",
+            "subflowParent": "userInputPage-d8866cad-461d-8f5f-af36-0965ac11cc01"
+        },
+        "createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515d": {
+            "id": "createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515d",
+            "componentType": "userInputPage",
+            "contentDefinition": {
+                "value": "",
+                "templatized": false
+            },
+            "attributes": [
+                {
+                    "attributeName": "password",
+                    "readOnly": false,
+                    "prefillValue": "none",
+                    "repeatField": false,
+                    "enforcePassword": false,
+                    "required": false
+                },
+                {
+                    "attributeName": "displayName",
+                    "readOnly": false,
+                    "prefillValue": "none",
+                    "required": false
+                }
+            ],
+            "attribute": {
+                "attributeName": "",
+                "readOnly": false,
+                "prefillValue": "fromAnotherAttribute",
+                "attributeSource": "",
+                "defaultValue": "",
+                "sessionContext": "{Culture:LanguageName}",
+                "required": false,
+                "repeatField": false
+            },
+            "validateEmail": true,
+            "email": {
+                "valEmailType": "newEmail",
+                "newEmail": {
+                    "attributeSource": "signInName",
+                    "prefillValue": false
+                },
+                "valPrevEmail": {
+                    "emailAttribute": "",
+                    "editEmail": false
+                },
+                "expiryTime": 10,
+                "configureApi": {
+                    "value": false,
+                    "disabled": true
+                }
+            },
+            "formSubmitAction": {
+                "displayName": "Submit action createNewAccount",
+                "id": "formsubmitaction-690945b0-095f-c953-e26f-4df4f05a57e2"
+            },
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "validationErrorMessage": "",
+            "parentNodeId": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+            "linkId": true,
+            "linkType": "createNewAccount",
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+        },
+        "aadCreate-2bafbab8-6495-f8e7-502b-1247dc7a80a7": {
+            "id": "aadCreate-2bafbab8-6495-f8e7-502b-1247dc7a80a7",
+            "componentType": "aadCreate",
+            "indexProperty": {
+                "id": "email",
+                "dataType": "string",
+                "claim": "signInName"
+            },
+            "attributes": [
+                {
+                    "id": "displayName",
+                    "claim": "displayName",
+                    "claimOrFunc": "Claim",
+                    "defaultValue": ""
+                },
+                {
+                    "id": "password",
+                    "claim": "password",
+                    "claimOrFunc": "Claim",
+                    "defaultValue": ""
+                }
+            ],
+            "attribute": {
+                "id": "",
+                "claim": ""
+            },
+            "mapObjectId": true,
+            "mapUserPrincipalName": false,
+            "mappedClaim": "objectId",
+            "upnClaim": "",
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "flowchart": "formsubmitaction-690945b0-095f-c953-e26f-4df4f05a57e2",
+            "subflowParent": "createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515d"
+        },
+        "userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1": {
+            "id": "userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1",
+            "componentType": "userInputPage",
+            "contentDefinition": {
+                "value": "",
+                "templatized": false
+            },
+            "attributes": [],
+            "attribute": {
+                "attributeName": "",
+                "readOnly": false,
+                "prefillValue": "fromAnotherAttribute",
+                "attributeSource": "",
+                "defaultValue": "",
+                "sessionContext": "{Culture:LanguageName}",
+                "required": false,
+                "repeatField": false
+            },
+            "validateEmail": true,
+            "email": {
+                "valEmailType": "valPrevEmail",
+                "newEmail": {
+                    "attributeSource": "signInName",
+                    "prefillValue": false
+                },
+                "valPrevEmail": {
+                    "emailAttribute": "signInName",
+                    "editEmail": false,
+                    "sourceType": "claim",
+                    "emailSource": "signInName"
+                },
+                "expiryTime": 10,
+                "configureApi": {
+                    "value": false,
+                    "disabled": true
+                }
+            },
+            "formSubmitAction": {
+                "displayName": "",
+                "id": ""
+            },
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "validationErrorMessage": "",
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "emailVerificationSendAction": {
+                "displayName": "Custom Email Verification User Input Page",
+                "id": "emailverificationsendaction-e82b57ba-62b7-c80b-9676-ab85d73c4978"
+            }
+        },
+        "sendEmailOTP-3b952f70-d3dd-9af4-0e92-685d8a1a1657": {
+            "id": "sendEmailOTP-3b952f70-d3dd-9af4-0e92-685d8a1a1657",
+            "componentType": "sendEmailOTP",
+            "otpField": "otp",
+            "language": {
+                "source": "",
+                "sourceType": ""
+            },
+            "fields": [],
+            "emailClaim": "signInName",
+            "templateName": "",
+            "flowchart": "emailverificationsendaction-e82b57ba-62b7-c80b-9676-ab85d73c4978",
+            "subflowParent": "userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1",
+            "emailTemplate": "d-fd6a1c8fd9f94c73a6db0cae7743478d"
+        }
+    },
+    "flowcharts": {
+        "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8": {
+            "id": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "flowchartName": "SignInSignUp",
+            "flowchartType": "UserJourney",
+            "components": [
+                "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+                "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd",
+                "aadRead-24e20228-6f4d-c189-860b-8b331978610d",
+                "tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e",
+                "createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515d",
+                "userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1"
+            ],
+            "nodes": [
+                {
+                    "id": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+                    "type": "process",
+                    "componentType": "signIn",
+                    "position": {
+                        "x": 434.6354064941406,
+                        "y": 42
+                    },
+                    "data": {
+                        "label": "signIn Component"
+                    },
+                    "width": 116,
+                    "height": 29,
+                    "selected": false,
+                    "dragging": true
+                },
+                {
+                    "id": "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd",
+                    "parentNodeId": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+                    "type": "process",
+                    "componentType": "userInputPage",
+                    "linkId": true,
+                    "linkType": "localAccountSignIn",
+                    "position": {
+                        "x": 674.7031097412109,
+                        "y": 242.5
+                    },
+                    "data": {
+                        "label": "localAccountSignIn"
+                    },
+                    "width": 120,
+                    "height": 29,
+                    "selected": false,
+                    "dragging": true
+                },
+                {
+                    "id": "aadRead-24e20228-6f4d-c189-860b-8b331978610d",
+                    "type": "process",
+                    "componentType": "aadRead",
+                    "position": {
+                        "x": 569.8591241050348,
+                        "y": 530.8540693594521
+                    },
+                    "data": {
+                        "label": "AAD Read"
+                    },
+                    "width": 69,
+                    "height": 29
+                },
+                {
+                    "id": "tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e",
+                    "type": "process",
+                    "componentType": "tokenIssuer",
+                    "position": {
+                        "x": 465.41970701664525,
+                        "y": 626.0990407680904
+                    },
+                    "data": {
+                        "label": "Token Issuer"
+                    },
+                    "width": 81,
+                    "height": 29
+                },
+                {
+                    "id": "createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515d",
+                    "parentNodeId": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+                    "type": "process",
+                    "componentType": "userInputPage",
+                    "linkId": true,
+                    "linkType": "createNewAccount",
+                    "position": {
+                        "x": 299.75294370760037,
+                        "y": 206.05344469025675
+                    },
+                    "data": {
+                        "label": "createNewAccount"
+                    },
+                    "selected": true,
+                    "dragging": true
+                },
+                {
+                    "id": "userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1",
+                    "type": "process",
+                    "componentType": "userInputPage",
+                    "position": {
+                        "x": 672.9183155226787,
+                        "y": 376.0505788346153
+                    },
+                    "data": {
+                        "label": "User Input Page"
+                    },
+                    "width": 105,
+                    "height": 29
+                }
+            ],
+            "edges": [
+                {
+                    "source": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+                    "sourceHandle": null,
+                    "target": "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd",
+                    "targetHandle": null,
+                    "markerEnd": {
+                        "type": "arrowclosed"
+                    },
+                    "style": {
+                        "stroke": "green"
+                    },
+                    "id": "reactflow__edge-signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026-localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd"
+                },
+                {
+                    "source": "aadRead-24e20228-6f4d-c189-860b-8b331978610d",
+                    "sourceHandle": "down",
+                    "target": "tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e",
+                    "targetHandle": null,
+                    "markerEnd": {
+                        "type": "arrowclosed"
+                    },
+                    "style": {
+                        "stroke": "green"
+                    },
+                    "id": "reactflow__edge-aadRead-24e20228-6f4d-c189-860b-8b331978610ddown-tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e"
+                },
+                {
+                    "source": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+                    "sourceHandle": null,
+                    "target": "createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515d",
+                    "targetHandle": null,
+                    "markerEnd": {
+                        "type": "arrowclosed"
+                    },
+                    "style": {
+                        "stroke": "green"
+                    },
+                    "id": "reactflow__edge-signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026-createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515d"
+                },
+                {
+                    "source": "createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515d",
+                    "sourceHandle": "down",
+                    "target": "tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e",
+                    "targetHandle": null,
+                    "markerEnd": {
+                        "type": "arrowclosed"
+                    },
+                    "style": {
+                        "stroke": "green"
+                    },
+                    "id": "reactflow__edge-createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515ddown-tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e"
+                },
+                {
+                    "source": "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd",
+                    "sourceHandle": "down",
+                    "target": "userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1",
+                    "targetHandle": null,
+                    "markerEnd": {
+                        "type": "arrowclosed"
+                    },
+                    "style": {
+                        "stroke": "green"
+                    },
+                    "id": "reactflow__edge-localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dddown-userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1"
+                },
+                {
+                    "source": "userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1",
+                    "sourceHandle": "down",
+                    "target": "aadRead-24e20228-6f4d-c189-860b-8b331978610d",
+                    "targetHandle": null,
+                    "markerEnd": {
+                        "type": "arrowclosed"
+                    },
+                    "style": {
+                        "stroke": "green"
+                    },
+                    "id": "reactflow__edge-userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1down-aadRead-24e20228-6f4d-c189-860b-8b331978610d"
+                }
+            ],
+            "templateName": "Sign In Sign Up Password Reset Migrated User.json"
+        },
+        "formsubmitaction-00df8c4b-ec27-b978-0dd7-e08d9bfe3da6": {
+            "id": "formsubmitaction-00df8c4b-ec27-b978-0dd7-e08d9bfe3da6",
+            "flowchartName": "action item signIn",
+            "flowchartType": "formSubmitAction",
+            "components": [
+                "usernamePasswordValidation-6d5914f2-34bd-0874-2b84-a105c664ce80"
+            ],
+            "nodes": [
+                {
+                    "id": "usernamePasswordValidation-6d5914f2-34bd-0874-2b84-a105c664ce80",
+                    "type": "process",
+                    "componentType": "usernamePasswordValidation",
+                    "position": {
+                        "x": 404.2942552999827,
+                        "y": 294.7294853741465
+                    },
+                    "data": {
+                        "label": "Username Password Validation"
+                    },
+                    "width": 185,
+                    "height": 29,
+                    "selected": true,
+                    "dragging": true
+                }
+            ],
+            "edges": [],
+            "parentComponentId": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+            "parentFCId": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "templateName": "Sign In Sign Up Password Reset Migrated User.json",
+            "subFlowType": "formSubmitAction"
+        },
+        "formsubmitaction-79a5e03b-13cf-ddae-f00b-f16f5e30f9b2": {
+            "id": "formsubmitaction-79a5e03b-13cf-ddae-f00b-f16f5e30f9b2",
+            "flowchartName": "action item userInputPage",
+            "flowchartType": "formSubmitAction",
+            "components": [
+                "aadCreate-c49e3025-b259-daa5-57f2-197afcbd9649"
+            ],
+            "nodes": [
+                {
+                    "id": "aadCreate-c49e3025-b259-daa5-57f2-197afcbd9649",
+                    "type": "process",
+                    "componentType": "aadCreate",
+                    "position": {
+                        "x": 539.0059059947655,
+                        "y": 205.1114104538609
+                    },
+                    "data": {
+                        "label": "AAD Create"
+                    }
+                }
+            ],
+            "edges": [],
+            "parentComponentId": "createNewAccount-7961d4f9-2273-0f8d-f9fe-b9b9855a58ec",
+            "parentFCId": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "templateName": "Sign In Sign Up Password Reset Migrated User.json",
+            "subFlowType": "formSubmitAction"
+        },
+        "formsubmitaction-888fe2a6-b090-e0ef-d52b-fe8e352a39bb": {
+            "id": "formsubmitaction-888fe2a6-b090-e0ef-d52b-fe8e352a39bb",
+            "flowchartName": "action item userInputPage",
+            "flowchartType": "formSubmitAction",
+            "components": [
+                "aadRead-cc593723-cf1c-4b1b-2014-afa881eb63d6"
+            ],
+            "nodes": [
+                {
+                    "id": "aadRead-cc593723-cf1c-4b1b-2014-afa881eb63d6",
+                    "type": "process",
+                    "componentType": "aadRead",
+                    "position": {
+                        "x": 518.936507030441,
+                        "y": 173.8022793132575
+                    },
+                    "data": {
+                        "label": "AAD Read"
+                    }
+                }
+            ],
+            "edges": [],
+            "parentComponentId": "forgotPassword-c7c5948a-7961-d30d-6128-b2d9d10eef8b",
+            "parentFCId": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "templateName": "Sign In Sign Up Password Reset Migrated User.json",
+            "subFlowType": "formSubmitAction"
+        },
+        "formsubmitaction-eb75f189-0d2f-f4c6-f3e8-cf5a9a8f19f1": {
+            "id": "formsubmitaction-eb75f189-0d2f-f4c6-f3e8-cf5a9a8f19f1",
+            "flowchartName": "action item userInputPage",
+            "flowchartType": "formSubmitAction",
+            "components": [
+                "aadUpdate-7d0cac62-f202-c755-b1f4-1f2076235b7b"
+            ],
+            "nodes": [
+                {
+                    "id": "aadUpdate-7d0cac62-f202-c755-b1f4-1f2076235b7b",
+                    "type": "process",
+                    "componentType": "aadUpdate",
+                    "position": {
+                        "x": 368.6268754718375,
+                        "y": 266.3342715632039
+                    },
+                    "data": {
+                        "label": "AAD Update"
+                    }
+                }
+            ],
+            "edges": [],
+            "parentComponentId": "userInputPage-d8866cad-461d-8f5f-af36-0965ac11cc01",
+            "parentFCId": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "subFlowType": "formSubmitAction"
+        },
+        "formsubmitaction-690945b0-095f-c953-e26f-4df4f05a57e2": {
+            "id": "formsubmitaction-690945b0-095f-c953-e26f-4df4f05a57e2",
+            "flowchartName": "Submit action createNewAccount",
+            "flowchartType": "formSubmitAction",
+            "components": [
+                "aadCreate-2bafbab8-6495-f8e7-502b-1247dc7a80a7"
+            ],
+            "nodes": [
+                {
+                    "id": "aadCreate-2bafbab8-6495-f8e7-502b-1247dc7a80a7",
+                    "type": "process",
+                    "componentType": "aadCreate",
+                    "position": {
+                        "x": 637.0485853338157,
+                        "y": 228.75572933566752
+                    },
+                    "data": {
+                        "label": "AAD Create"
+                    }
+                }
+            ],
+            "edges": [],
+            "parentComponentId": "createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515d",
+            "parentFCId": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "subFlowType": "formSubmitAction"
+        },
+        "emailverificationsendaction-e82b57ba-62b7-c80b-9676-ab85d73c4978": {
+            "id": "emailverificationsendaction-e82b57ba-62b7-c80b-9676-ab85d73c4978",
+            "flowchartName": "Custom Email Verification User Input Page",
+            "flowchartType": "emailVerificationSendAction",
+            "components": [
+                "sendEmailOTP-3b952f70-d3dd-9af4-0e92-685d8a1a1657"
+            ],
+            "nodes": [
+                {
+                    "id": "sendEmailOTP-3b952f70-d3dd-9af4-0e92-685d8a1a1657",
+                    "type": "process",
+                    "componentType": "sendEmailOTP",
+                    "position": {
+                        "x": 738.5275060892674,
+                        "y": 276.4941312628234
+                    },
+                    "data": {
+                        "label": "Email_MFA"
+                    },
+                    "width": 103,
+                    "height": 29,
+                    "selected": true,
+                    "dragging": true
+                }
+            ],
+            "edges": [],
+            "parentComponentId": "userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1",
+            "parentFCId": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "subFlowType": "emailVerificationSendAction"
+        }
+    },
+    "currentFlowchartId": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+    "currentOpenNodeId": "",
+    "currentTabId": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+    "claims": {
+        "socialIdpUserId": {
+            "id": "socialIdpUserId",
+            "displayName": "Username",
+            "dataType": "string",
+            "userInputType": "TextBox",
+            "userHelpText": "",
+            "adminHelpText": ""
+        },
+        "objectId": {
+            "id": "objectId",
+            "displayName": "User's Object ID",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "Object identifier (ID) of the user object in Azure AD.",
+            "adminHelpText": ""
+        },
+        "password": {
+            "id": "password",
+            "displayName": "Password",
+            "dataType": "string",
+            "userInputType": "Password",
+            "userHelpText": "Enter password",
+            "adminHelpText": "",
+            "options": [
+                "Lowercase Letters (a to z)",
+                "Uppercase Letters (A to Z)",
+                "Number (0-9)"
+            ],
+            "length": [
+                0,
+                0
+            ],
+            "minConstraints": "2"
+        },
+        "tenantId": {
+            "id": "tenantId",
+            "displayName": "User's Object's Tenant ID",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "Tenant identifier (ID) of the user object in Azure AD.",
+            "adminHelpText": ""
+        },
+        "signInName": {
+            "id": "signInName",
+            "displayName": "Sign in name",
+            "dataType": "string",
+            "userInputType": "TextBox",
+            "userHelpText": "",
+            "adminHelpText": ""
+        },
+        "accountEnabled": {
+            "id": "accountEnabled",
+            "displayName": "Account Enabled",
+            "dataType": "boolean",
+            "userInputType": "",
+            "userHelpText": "Specifies whether your account is enabled.",
+            "adminHelpText": "Specifies whether the user's account is enabled."
+        },
+        "foreignId": {
+            "id": "foreignId",
+            "displayName": "foreignId",
+            "dataType": "userIdentity",
+            "userInputType": "",
+            "userHelpText": "Used for social providers",
+            "adminHelpText": ""
+        },
+        "passwordPolicies": {
+            "id": "passwordPolicies",
+            "displayName": "Password Policies",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "Password policies used by Azure AD to determine password strength, expiry etc.",
+            "adminHelpText": ""
+        },
+        "client_id": {
+            "id": "client_id",
+            "displayName": "client_id",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "Special parameter passed to EvoSTS.",
+            "adminHelpText": "Special parameter passed to EvoSTS."
+        },
+        "resource_id": {
+            "id": "resource_id",
+            "displayName": "resource_id",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "Special parameter passed to EvoSTS.",
+            "adminHelpText": "Special parameter passed to EvoSTS."
+        },
+        "sub": {
+            "id": "sub",
+            "displayName": "Subject",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "",
+            "adminHelpText": ""
+        },
+        "identityProvider": {
+            "id": "identityProvider",
+            "displayName": "Identity Provider",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "",
+            "adminHelpText": ""
+        },
+        "displayName": {
+            "id": "displayName",
+            "displayName": "Display Name",
+            "dataType": "string",
+            "userInputType": "TextBox",
+            "userHelpText": "Your display name.",
+            "adminHelpText": ""
+        },
+        "email": {
+            "id": "email",
+            "displayName": "Email Address",
+            "dataType": "string",
+            "userInputType": "TextBox",
+            "userHelpText": "Email address that can be used to contact you.",
+            "adminHelpText": ""
+        },
+        "otherMails": {
+            "id": "otherMails",
+            "displayName": "Alternate Email Addresses",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "Email addresses that can be used to contact the user.",
+            "adminHelpText": ""
+        },
+        "userPrincipalName": {
+            "id": "userPrincipalName",
+            "displayName": "UserPrincipalName",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "Your user name as stored in the Azure Active Directory.",
+            "adminHelpText": ""
+        },
+        "upnUserName": {
+            "id": "upnUserName",
+            "displayName": "UPN User Name",
+            "dataType": "string",
+            "userInputType": "TextBox",
+            "userHelpText": "The user name for creating user principal name.",
+            "adminHelpText": ""
+        },
+        "newUser": {
+            "id": "newUser",
+            "displayName": "User is new",
+            "dataType": "boolean",
+            "userInputType": "",
+            "userHelpText": "",
+            "adminHelpText": ""
+        },
+        "executedSelfAssertedInput": {
+            "id": "executedSelfAssertedInput",
+            "displayName": "executed-SelfAsserted-Input",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "A claim that specifies whether attributes were collected from the user.",
+            "adminHelpText": ""
+        },
+        "authenticationSource": {
+            "id": "authenticationSource",
+            "displayName": "AuthenticationSource",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "Specifies whether the user was authenticated at Social IDP or local account.",
+            "adminHelpText": ""
+        },
+        "nca": {
+            "id": "nca",
+            "displayName": "nca",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "Special parameter passed for local account authentication to login.microsoftonline.com.",
+            "adminHelpText": ""
+        },
+        "grant_type": {
+            "id": "grant_type",
+            "displayName": "grant_type",
+            "dataType": "string",
+            "userInputType": "",
+            "userHelpText": "Special parameter passed for local account authentication to login.microsoftonline.com.",
+            "adminHelpText": ""
+        },
+        "scope": {
+            "id": "scope",
+            "displayName": "scope",
+            "dataType": "string",
+            "userInputType": "TextBox",
+            "userHelpText": "Special parameter passed for local account authentication to login.microsoftonline.com.",
+            "adminHelpText": ""
+        },
+        "objectIdFromSession": {
+            "id": "objectIdFromSession",
+            "displayName": "objectIdFromSession",
+            "dataType": "boolean",
+            "userInputType": "",
+            "userHelpText": "Parameter provided by the default session management provider to indicate that the object id has been retrieved from an SSO session.",
+            "adminHelpText": ""
+        },
+        "isActiveMFASession": {
+            "id": "isActiveMFASession",
+            "displayName": "isActiveMFASession",
+            "dataType": "boolean",
+            "userInputType": "",
+            "userHelpText": "Parameter provided by the MFA session management to indicate that the user has an active MFA session.",
+            "adminHelpText": ""
+        },
+        "givenName": {
+            "id": "givenName",
+            "displayName": "Given Name",
+            "dataType": "string",
+            "userInputType": "TextBox",
+            "userHelpText": "Your given name (also known as first name).",
+            "adminHelpText": ""
+        },
+        "surname": {
+            "id": "surname",
+            "displayName": "Surname",
+            "dataType": "string",
+            "userInputType": "TextBox",
+            "userHelpText": "Your surname (also known as family name or last name).",
+            "adminHelpText": ""
+        },
+        "pwdResetRequired": {
+            "id": "pwdResetRequired",
+            "displayName": "pwdResetRequired",
+            "dataType": "boolean",
+            "userInputType": "",
+            "userHelpText": "",
+            "adminHelpText": ""
+        },
+        "pwdResetReqd1": {
+            "id": "pwdResetReqd1",
+            "displayName": "pwdResetRequired",
+            "dataType": "boolean",
+            "userInputType": "TextBox",
+            "userHelpText": "",
+            "adminHelpText": ""
+        },
+        "strongAuthenticationPhoneNumber": {
+            "id": "strongAuthenticationPhoneNumber",
+            "displayName": "Phone Number",
+            "dataType": "string",
+            "mask": {
+                "type": "Regex",
+                "value": "XXX-XXX-",
+                "regex": ".+(?=.{4}$)"
+            }
+        },
+        "newNumberEntered": {
+            "id": "newNumberEntered",
+            "displayName": "New Phone Number Entered",
+            "dataType": "boolean"
+        }
+    },
+    "aadAttributes": {
+        "accountEnabled": {
+            "id": "accountEnabled",
+            "dataType": "boolean"
+        },
+        "ageGroup": {
+            "id": "ageGroup",
+            "dataType": "string"
+        },
+        "alternativeSecurityId": {
+            "id": "alternativeSecurityId",
+            "dataType": "string"
+        },
+        "alternativeSecurityIds": {
+            "id": "alternativeSecurityIds",
+            "dataType": "string"
+        },
+        "city": {
+            "id": "city",
+            "dataType": "string"
+        },
+        "consentProvidedForMinor": {
+            "id": "consentProvidedForMinor",
+            "dataType": "string"
+        },
+        "country": {
+            "id": "country",
+            "dataType": "string"
+        },
+        "createdDateTime": {
+            "id": "createdDateTime",
+            "dataType": "string"
+        },
+        "creationType": {
+            "id": "creationType",
+            "dataType": "string"
+        },
+        "dateOfBirth": {
+            "id": "dateOfBirth",
+            "dataType": "string"
+        },
+        "department": {
+            "id": "department",
+            "dataType": "string"
+        },
+        "displayName": {
+            "id": "displayName",
+            "dataType": "string"
+        },
+        "facsimileTelephoneNumber": {
+            "id": "facsimileTelephoneNumber",
+            "dataType": "string"
+        },
+        "givenName": {
+            "id": "givenName",
+            "dataType": "string"
+        },
+        "jobTitle": {
+            "id": "jobTitle",
+            "dataType": "string"
+        },
+        "immutableId": {
+            "id": "immutableId",
+            "dataType": "string"
+        },
+        "legalAgeGroupClassification": {
+            "id": "legalAgeGroupClassification",
+            "dataType": "string"
+        },
+        "legalCountry": {
+            "id": "legalCountry",
+            "dataType": "string"
+        },
+        "mailNickName": {
+            "id": "mailNickName",
+            "dataType": "string"
+        },
+        "mobile": {
+            "id": "mobile",
+            "dataType": "string"
+        },
+        "netId": {
+            "id": "netId",
+            "dataType": "string"
+        },
+        "objectId": {
+            "id": "objectId",
+            "dataType": "string"
+        },
+        "otherMails": {
+            "id": "otherMails",
+            "dataType": "string"
+        },
+        "password": {
+            "id": "password",
+            "dataType": "string"
+        },
+        "passwordPolicies": {
+            "id": "passwordPolicies",
+            "dataType": "string"
+        },
+        "physicalDeliveryOfficeName": {
+            "id": "physicalDeliveryOfficeName",
+            "dataType": "string"
+        },
+        "postalCode": {
+            "id": "postalCode",
+            "dataType": "string"
+        },
+        "preferredLanguage": {
+            "id": "preferredLanguage",
+            "dataType": "string"
+        },
+        "refreshTokensValidFromDateTime": {
+            "id": "refreshTokensValidFromDateTime",
+            "dataType": "string"
+        },
+        "signInNames": {
+            "id": "signInNames",
+            "dataType": "string"
+        },
+        "signInNames.userName": {
+            "id": "signInNames.userName",
+            "dataType": "string"
+        },
+        "signInNames.phoneNumber": {
+            "id": "signInNames.phoneNumber",
+            "dataType": "string"
+        },
+        "signInNames.emailAddress": {
+            "id": "signInNames.emailAddress",
+            "dataType": "string"
+        },
+        "state": {
+            "id": "state",
+            "dataType": "string"
+        },
+        "streetAddress": {
+            "id": "streetAddress",
+            "dataType": "string"
+        },
+        "strongAuthenticationAlternativePhoneNumber": {
+            "id": "strongAuthenticationAlternativePhoneNumber",
+            "dataType": "string"
+        },
+        "strongAuthenticationEmailAddress": {
+            "id": "strongAuthenticationEmailAddress",
+            "dataType": "string"
+        },
+        "strongAuthenticationPhoneNumber": {
+            "id": "strongAuthenticationPhoneNumber",
+            "dataType": "string"
+        },
+        "surname": {
+            "id": "surname",
+            "dataType": "string"
+        },
+        "telephoneNumber": {
+            "id": "telephoneNumber",
+            "dataType": "string"
+        },
+        "userPrincipalName": {
+            "id": "userPrincipalName",
+            "dataType": "string"
+        },
+        "usageLocation": {
+            "id": "usageLocation",
+            "dataType": "string"
+        },
+        "userType": {
+            "id": "userType",
+            "dataType": "string"
+        },
+        "userState": {
+            "id": "userState",
+            "dataType": "string"
+        },
+        "userStateChangedOn": {
+            "id": "userStateChangedOn",
+            "dataType": "string"
+        },
+        "userIdentities": {
+            "id": "userIdentities",
+            "dataType": "userIdentityCollection"
+        },
+        "extension_pwdResetRequired": {
+            "id": "extension_pwdResetRequired",
+            "dataType": "boolean"
+        }
+    },
+    "validationResults": {
+        "claim": {}
+    },
+    "ssoSession": {
+        "persistedClaims": [
+            {
+                "claimId": "objectId",
+                "defaultValue": ""
+            }
+        ],
+        "outputClaims": [],
+        "sessionFlags": {}
+    },
+    "templatization": {
+        "templateFields": {
+            "tenantName": {
+                "id": "tenantName",
+                "name": "tenantName",
+                "nodeFields": {}
+            },
+            "Tenant": {
+                "id": "Tenant",
+                "name": "Tenant",
+                "nodeFields": {}
+            },
+            "tenantId": {
+                "id": "tenantId",
+                "name": "tenantId",
+                "nodeFields": {}
+            },
+            "iefAppId": {
+                "id": "iefAppId",
+                "name": "iefAppId",
+                "nodeFields": {}
+            },
+            "proxyIefAppId": {
+                "id": "proxyIefAppId",
+                "name": "proxyIefAppId",
+                "nodeFields": {}
+            },
+            "extensionsContainerClientId": {
+                "id": "extensionsContainerClientId",
+                "name": "extensionsContainerClientId",
+                "nodeFields": {}
+            },
+            "extensionsContainerObjectId": {
+                "id": "extensionsContainerObjectId",
+                "name": "extensionsContainerObjectId",
+                "nodeFields": {}
+            },
+            "tokenSigningKeyContainer": {
+                "id": "tokenSigningKeyContainer",
+                "name": "tokenSigningKeyContainer",
+                "nodeFields": {}
+            },
+            "tokenEncryptionKeyContainer": {
+                "id": "tokenEncryptionKeyContainer",
+                "name": "tokenEncryptionKeyContainer",
+                "nodeFields": {}
+            },
+            "SAMLCert": {
+                "id": "SAMLCert",
+                "name": "SAMLCert",
+                "nodeFields": {}
+            },
+            "oidcTestApplicationId": {
+                "id": "oidcTestApplicationId",
+                "name": "oidcTestApplicationId",
+                "nodeFields": {}
+            },
+            "applicationInsightsInstrumentationKey": {
+                "id": "applicationInsightsInstrumentationKey",
+                "name": "applicationInsightsInstrumentationKey",
+                "nodeFields": {}
+            },
+            "applicationInsightsClientEnabled": {
+                "id": "applicationInsightsClientEnabled",
+                "name": "applicationInsightsClientEnabled",
+                "nodeFields": {}
+            },
+            "defaultSamlIssuerId": {
+                "id": "defaultSamlIssuerId",
+                "name": "defaultSamlIssuerId",
+                "nodeFields": {}
+            }
+        },
+        "environments": {
+            "GritSandbox": {
+                "id": "GritSandbox",
+                "name": "GritSandbox",
+                "settings": {
+                    "tenantName": "gptestb2corg",
+                    "Tenant": "gptestb2corg.onmicrosoft.com",
+                    "tenantId": "dcce0867-073b-4819-9862-133adeb6bd7f",
+                    "iefAppId": "f9b3b389-0b7a-4690-aa21-128bfd2b30af",
+                    "proxyIefAppId": "4fd657d2-9232-45c7-9246-736ed750c162",
+                    "extensionsContainerClientId": "e98d96c4-633d-478f-9518-460918ad25c1",
+                    "extensionsContainerObjectId": "e8f4092d-f8d6-493b-bb59-bc76299408ad",
+                    "tokenSigningKeyContainer": "B2C_1A_TokenSigningKeyContainer",
+                    "tokenEncryptionKeyContainer": "B2C_1A_TokenEncryptionKeyContainer",
+                    "SAMLCert": "B2C_1A_gpTestSamlTestCert",
+                    "oidcTestApplicationId": "de27c7d9-1880-447b-aa24-2ac363bd08d7",
+                    "defaultSamlIssuerId": "https://gptestb2corg.onmicrosoft.com",
+                    "applicationInsightsInstrumentationKey": "3c6fb700-ea88-48fa-982f-596dce17316f",
+                    "applicationInsightsClientEnabled": "false"
+                },
+                "readonlyDefaultSettings": true,
+                "linked": true
+            },
+            "gritDevTenant": {
+                "id": "gritDevTenant",
+                "name": "gritDevTenant",
+                "settings": {
+                    "tenantName": "gpdevb2c",
+                    "Tenant": "gpdevb2c.onmicrosoft.com",
+                    "tenantId": "7bd23860-e13d-4cf0-bbc7-a4a56c3dc0e3",
+                    "iefAppId": "a82e28dd-b16b-473a-a3a3-c3c486a5c59f",
+                    "proxyIefAppId": "eccdc34e-ac00-4609-914f-48a0b0393d67",
+                    "extensionsContainerClientId": "9cbd6f17-3de3-4b61-badc-73d8f38abe19",
+                    "extensionsContainerObjectId": "db7ec858-bf05-46fe-bbb2-8a6aa462044e",
+                    "tokenSigningKeyContainer": "B2C_1A_TokenSigningKeyContainer",
+                    "tokenEncryptionKeyContainer": "B2C_1A_TokenEncryptionKeyContainer",
+                    "SAMLCert": "B2C_1A_samlTestCert",
+                    "oidcTestApplicationId": "980626d3-2efc-402c-9335-f05c32d94ff8",
+                    "defaultSamlIssuerId": "https://gpdevb2c.onmicrosoft.com",
+                    "applicationInsightsInstrumentationKey": "3c6fb700-ea88-48fa-982f-596dce17316f",
+                    "applicationInsightsClientEnabled": "false"
+                },
+                "readonlyDefaultSettings": false,
+                "linked": true
+            }
+        },
+        "templatedComponents": {
+            "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026": {
+                "settings": [],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            },
+            "forgotPassword-c7c5948a-7961-d30d-6128-b2d9d10eef8b": {
+                "settings": [],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            },
+            "createNewAccount-7961d4f9-2273-0f8d-f9fe-b9b9855a58ec": {
+                "settings": [],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            },
+            "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd": {
+                "settings": [],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            },
+            "tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e": {
+                "settings": [],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            },
+            "userInputPage-d8866cad-461d-8f5f-af36-0965ac11cc01": {
+                "settings": [],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            },
+            "createNewAccount-b056de89-a22a-f7ea-51fb-8934d367515d": {
+                "settings": [],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            },
+            "userInputPage-e01bf3ec-ba24-82f8-d100-3fa248e82ec1": {
+                "settings": [],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            }
+        }
+    },
+    "jsonSchemaVersion": "4"
+}
