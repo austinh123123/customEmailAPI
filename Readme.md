@@ -1,3 +1,7 @@
+# Important
+Each example uses the same policy id's, only one will work at a time!
+
+
 # Custom email API calls with the Editor
 The following is an example of how to inject custom code into the IEF-Editor generated policies.
 This is specifically an example for a rest api call to send an email OTP

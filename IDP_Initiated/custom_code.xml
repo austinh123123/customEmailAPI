@@ -1,0 +1,4 @@
+<!--Insert this code into Technical profile in Relyparty file under protocol-->
+<Metadata>
+    <Item Key="IdpInitiatedProfileEnabled">true</Item>
+</Metadata>
