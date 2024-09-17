@@ -1,0 +1,35 @@
+<TrustFrameworkPolicy xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" PolicySchemaVersion="0.3.0.0"
+    TenantId="gpdevb2c.onmicrosoft.com" PolicyId="B2C_1A_SignInSignUp"
+    PublicPolicyUri="http://gpdevb2c.onmicrosoft.com/B2C_1A_SignInSignUp" DeploymentMode="Development"
+    UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights">
+    <BasePolicy>
+        <TenantId>gpdevb2c.onmicrosoft.com</TenantId>
+        <PolicyId>B2C_1A_PolicyBase</PolicyId>
+    </BasePolicy>
+    <RelyingParty>
+        <DefaultUserJourney ReferenceId="userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8" />
+        <UserJourneyBehaviors>
+            <SingleSignOn Scope="Tenant" />
+            <SessionExpiryType>Absolute</SessionExpiryType>
+            <SessionExpiryInSeconds>900</SessionExpiryInSeconds>
+            <JourneyInsights TelemetryEngine="ApplicationInsights"
+                InstrumentationKey="3c6fb700-ea88-48fa-982f-596dce17316f"
+                DeveloperMode="true" ClientEnabled="false"
+                ServerEnabled="true" TelemetryVersion="1.0.0" />
+            <ScriptExecution>Allow</ScriptExecution>
+        </UserJourneyBehaviors>
+        <TechnicalProfile Id="PolicyProfile">
+            <DisplayName>Policy Profile</DisplayName>
+            <Protocol Name="OpenIdConnect" />
+            <OutputClaims>
+                <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub" />
+                <OutputClaim ClaimTypeReferenceId="givenName" />
+                <OutputClaim ClaimTypeReferenceId="surname" />
+                <OutputClaim ClaimTypeReferenceId="signInName" />
+            </OutputClaims>
+            <SubjectNamingInfo ClaimType="sub" />
+        </TechnicalProfile>
+    </RelyingParty>
+</TrustFrameworkPolicy>
