@@ -29,7 +29,6 @@ def upload(policy_id: str, policy_text: str, token:str):
         "Content-Type": f"xml; charset=utf-8",
         "Authorization": f"Bearer {token}"
     }
-    print(headers)
     resp = r.put(
         endpoint,
         policy_text.encode('utf-8'),
@@ -37,6 +36,9 @@ def upload(policy_id: str, policy_text: str, token:str):
     )
     return resp.text
 
+def run_now_url(policyId: str):
+    """This is hard-coded to use the grit dev tenant"""
+    return f"https://gpdevb2c.b2clogin.com/gpdevb2c.onmicrosoft.com/oauth2/v2.0/authorize?p={policyId}&client_id=980626d3-2efc-402c-9335-f05c32d94ff8&nonce=defaultNonce&redirect_uri=https%3A%2F%2Fjwt.ms&scope=openid&response_type=id_token&prompt=login"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -53,5 +55,12 @@ if __name__ == "__main__":
     token = get_token(**token_info)
     for policy in policyUtils.get_policy_paths(args.policyFolder):
         with open(policy, "r") as f:
-            id = policyUtils.getId(policyUtils.parse_policy(policy))
-            print(upload(id, f.read(), token))
+            try:  
+                root = policyUtils.parse_policy(policy)
+                id = policyUtils.getId(root)
+                upload(id, f.read(), token)
+                print(f"Uploaded policy {id} to {token_info['tenant']}")
+                if policyUtils.is_RP_file(root):
+                    print(f"Run now link: {run_now_url(id)}")
+            except:
+                print(f"Could not parse file: {policy}, skipping upload")

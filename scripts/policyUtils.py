@@ -12,11 +12,14 @@ def parse_policy(policy_path: str):
     tree = ET.parse(policy_path)
     root = tree.getroot()
     return root
+schema = "{http://schemas.microsoft.com/online/cpim/schemas/2013/06}"
+def is_RP_file(policyRoot):
+    return len(policyRoot.findall(f".//{schema}RelyingParty")) > 0
 
 def getId(policyRoot):
     return policyRoot.attrib['PolicyId']
 
 if __name__ == "__main__":
     print(
-        getId(parse_policy("customEmail/basePolicy.xml"))
+        is_RP_file(parse_policy("customEmail/basePolicy.xml"))
     )
