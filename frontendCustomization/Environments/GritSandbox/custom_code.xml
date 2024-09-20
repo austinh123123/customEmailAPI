@@ -1,0 +1,3 @@
+<ContentDefinitionParameters>
+    <Parameter name="layout">{OAUTH-KV:layout}</Parameter>
+</ContentDefinitionParameters>
