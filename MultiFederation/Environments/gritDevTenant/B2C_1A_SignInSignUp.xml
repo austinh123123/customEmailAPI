@@ -1,0 +1,103 @@
+<TrustFrameworkPolicy xmlns="http://schemas.microsoft.com/online/cpim/schemas/2013/06"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" PolicySchemaVersion="0.3.0.0"
+    TenantId="gpdevb2c.onmicrosoft.com" PolicyId="B2C_1A_SignInSignUp_multi2"
+    PublicPolicyUri="http://gpdevb2c.onmicrosoft.com/B2C_1A_SignInSignUp" DeploymentMode="Development"
+    UserJourneyRecorderEndpoint="urn:journeyrecorder:applicationinsights">
+    <BasePolicy>
+        <TenantId>gpdevb2c.onmicrosoft.com</TenantId>
+        <PolicyId>B2C_1A_PolicyBase</PolicyId>
+    </BasePolicy>
+    <BuildingBlocks>
+        <ClaimsSchema>
+          <ClaimType Id="samlEnabledCollection">
+                      <DisplayName>Saml Enabled</DisplayName>
+                      <DataType>stringCollection</DataType>
+                  </ClaimType>
+                </ClaimsSchema>
+      <ClaimsTransformations>
+        <ClaimsTransformation Id="samlEnabledCopy" TransformationMethod="StringSplit">
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="samlEnabled" TransformationClaimType="inputClaim"/>
+                    </InputClaims>
+                    <InputParameters>
+                        <InputParameter Id="delimiter" DataType="string" Value=","/>
+                    </InputParameters>
+                    <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="samlEnabledCollection" TransformationClaimType="outputClaim"/>
+                    </OutputClaims>
+                </ClaimsTransformation>
+        </ClaimsTransformations>
+    
+        </BuildingBlocks>
+    <ClaimsProviders>
+      <ClaimsProvider>
+                <DisplayName>SetClaims</DisplayName>
+                <TechnicalProfiles>
+                    <TechnicalProfile Id="Set_Claims">
+                        <DisplayName>Set Claims</DisplayName>
+                        <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"/>
+                        <Metadata>
+                            <Item Key="IncludeClaimResolvingInClaimsHandling">true</Item>
+                        </Metadata>
+                        <OutputClaims>
+                            <OutputClaim ClaimTypeReferenceId="samlEnabled" DefaultValue="{OAUTH-KV:enabled}" AlwaysUseDefaultValue="true"/>
+                        </OutputClaims>
+                        <OutputClaimsTransformations>
+                            <OutputClaimsTransformation
+                                ReferenceId="samlEnabledCopy" />
+                        </OutputClaimsTransformations>
+                        <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop"/>
+                    </TechnicalProfile>
+                </TechnicalProfiles>
+            </ClaimsProvider>
+        <ClaimsProvider>
+            <DisplayName>B2C</DisplayName>
+            <TechnicalProfiles>
+                <TechnicalProfile Id="Saml_Federation_ClaimsProviderSelector">
+                    <Metadata>
+                        <Item Key="ClaimTypeOnWhichToEnable">samlEnabledCollection</Item>
+                        <Item Key="ClaimValueOnWhichToEnable">saml1</Item>
+                    </Metadata>
+                    <EnabledForUserJourneys>OnItemExistenceInStringCollectionClaim</EnabledForUserJourneys>
+                </TechnicalProfile>
+            </TechnicalProfiles>
+        </ClaimsProvider>
+        <ClaimsProvider>
+            <DisplayName>SAML2</DisplayName>
+            <TechnicalProfiles>
+                <TechnicalProfile Id="SAML_Federation2_ClaimsProviderSelector">
+                    <Metadata>
+                        <Item Key="ClaimTypeOnWhichToEnable">samlEnabledCollection</Item>
+                        <Item Key="ClaimValueOnWhichToEnable">saml2</Item>
+                    </Metadata>
+                    <EnabledForUserJourneys>OnItemExistenceInStringCollectionClaim</EnabledForUserJourneys>
+                </TechnicalProfile>
+            </TechnicalProfiles>
+        </ClaimsProvider>
+    </ClaimsProviders>
+    <RelyingParty>
+        <DefaultUserJourney ReferenceId="userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8" />
+        <UserJourneyBehaviors>
+            <SingleSignOn Scope="Tenant" />
+            <SessionExpiryType>Absolute</SessionExpiryType>
+            <SessionExpiryInSeconds>900</SessionExpiryInSeconds>
+            <JourneyInsights TelemetryEngine="ApplicationInsights"
+                InstrumentationKey="3c6fb700-ea88-48fa-982f-596dce17316f"
+                DeveloperMode="true" ClientEnabled="false"
+                ServerEnabled="true" TelemetryVersion="1.0.0" />
+            <ScriptExecution>Allow</ScriptExecution>
+        </UserJourneyBehaviors>
+        <TechnicalProfile Id="PolicyProfile">
+            <DisplayName>Policy Profile</DisplayName>
+            <Protocol Name="OpenIdConnect" />
+            <OutputClaims>
+                <OutputClaim ClaimTypeReferenceId="objectId" PartnerClaimType="sub" />
+                <OutputClaim ClaimTypeReferenceId="givenName" />
+                <OutputClaim ClaimTypeReferenceId="surname" />
+                <OutputClaim ClaimTypeReferenceId="signInName" />
+            </OutputClaims>
+            <SubjectNamingInfo ClaimType="sub" />
+        </TechnicalProfile>
+    </RelyingParty>
+</TrustFrameworkPolicy>
