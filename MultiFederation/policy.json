@@ -1,44 +1,5 @@
 {
     "nodeData": {
-        "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026": {
-            "id": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
-            "componentType": "signIn",
-            "usernameType": "email",
-            "username": "signInName",
-            "keepMeSignedIn": "true",
-            "showPasswordTextbox": "true",
-            "sessionManagement": {
-                "option": "alwaysExecute",
-                "sessionId": ""
-            },
-            "links": {
-                "forgotPassword": false,
-                "otp": false,
-                "createNewAccount": false,
-                "localAccountSignIn": true,
-                "socialProviders": {
-                    "employeeLogin": false,
-                    "facebook": false,
-                    "google": false,
-                    "discord": false,
-                    "linkedIn": false,
-                    "weChat": false
-                }
-            },
-            "formSubmitAction": {
-                "displayName": "action item signIn",
-                "id": "formsubmitaction-00df8c4b-ec27-b978-0dd7-e08d9bfe3da6"
-            },
-            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
-            "contentDefinition": {
-                "value": "",
-                "templatized": false
-            },
-            "nodeLinks": [
-                "samlIdP-ecd36f27-7949-c0f6-83cd-2a7cb873a965",
-                "samlIdP-bb563d0d-258c-d718-1242-5f377feb4a37"
-            ]
-        },
         "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd": {
             "id": "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd",
             "componentType": "userInputPage",
@@ -101,43 +62,6 @@
             },
             "flowchart": "formsubmitaction-00df8c4b-ec27-b978-0dd7-e08d9bfe3da6",
             "subflowParent": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026"
-        },
-        "aadRead-24e20228-6f4d-c189-860b-8b331978610d": {
-            "id": "aadRead-24e20228-6f4d-c189-860b-8b331978610d",
-            "componentType": "aadRead",
-            "indexProperty": {
-                "id": "objectid",
-                "dataType": "string",
-                "claim": "objectId"
-            },
-            "attributes": [
-                {
-                    "id": "givenName",
-                    "claim": "givenName"
-                },
-                {
-                    "id": "surname",
-                    "claim": "surname"
-                },
-                {
-                    "id": "displayName",
-                    "claim": "displayName"
-                },
-                {
-                    "id": "signInNames.emailAddress",
-                    "claim": "signInName"
-                }
-            ],
-            "attribute": {
-                "id": "",
-                "claim": ""
-            },
-            "sessionManagement": {
-                "option": "alwaysExecute",
-                "sessionId": ""
-            },
-            "throwErrorIfNotFound": false,
-            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
         },
         "aadCreate-c49e3025-b259-daa5-57f2-197afcbd9649": {
             "id": "aadCreate-c49e3025-b259-daa5-57f2-197afcbd9649",
@@ -223,13 +147,7 @@
                     "partnerClaimType": ""
                 },
                 {
-                    "attributeName": "givenName",
-                    "defaultValue": "",
-                    "alwaysUseDefaultValue": false,
-                    "partnerClaimType": ""
-                },
-                {
-                    "attributeName": "surname",
+                    "attributeName": "displayName",
                     "defaultValue": "",
                     "alwaysUseDefaultValue": false,
                     "partnerClaimType": ""
@@ -523,6 +441,189 @@
                 "sessionId": ""
             },
             "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+        },
+        "conditionals-ac15edb3-a10e-a25c-4bd0-d6e698f85bd9": {
+            "id": "conditionals-ac15edb3-a10e-a25c-4bd0-d6e698f85bd9",
+            "componentType": "conditionals",
+            "condition": {
+                "claim": "",
+                "comValue": "",
+                "compareTo": "literal",
+                "operator": "==",
+                "option": "ignorecase"
+            },
+            "groups": [
+                [
+                    {
+                        "claim": "samlEnabled",
+                        "operator": "==",
+                        "compareTo": "literal",
+                        "comValue": "saml1",
+                        "option": "ignorecase",
+                        "dateTimeOffset": "0"
+                    }
+                ]
+            ],
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+        },
+        "samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869e": {
+            "id": "samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869e",
+            "componentType": "samlIdP",
+            "idpDomain": {
+                "value": "Saml1",
+                "templatized": false
+            },
+            "metadataUrl": {
+                "value": "setting-66708f00-462e-cb87-f07b-9f9c6b1e1c7d",
+                "templatized": true
+            },
+            "signRequests": true,
+            "messageSigningKey": {
+                "value": "B2C_1A_samlTestCert",
+                "templatized": false
+            },
+            "signatureAlgorithm": "Sha1",
+            "responseSignatures": true,
+            "assertionsEncrypted": false,
+            "assertionDecryptionKey": {
+                "value": "",
+                "templatized": false
+            },
+            "metadataSigningKey": {
+                "value": "",
+                "templatized": false
+            },
+            "requestUser": false,
+            "requestUserClaim": "",
+            "issuerIdPartnerClaimType": "assertionSubjectName",
+            "outputClaims": [
+                {
+                    "claimId": "displayName",
+                    "partnerClaimType": "displayName",
+                    "defaultValue": "",
+                    "alwaysUseDefaultValue": false
+                },
+                {
+                    "claimId": "signInName",
+                    "partnerClaimType": "email",
+                    "defaultValue": "",
+                    "alwaysUseDefaultValue": false
+                },
+                {
+                    "claimId": "accountEnabled",
+                    "partnerClaimType": "",
+                    "defaultValue": "false",
+                    "alwaysUseDefaultValue": true
+                }
+            ],
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+        },
+        "conditionals-187e895d-bbe3-5bcf-bf6c-5ba1d71cd97a": {
+            "id": "conditionals-187e895d-bbe3-5bcf-bf6c-5ba1d71cd97a",
+            "componentType": "conditionals",
+            "condition": {
+                "claim": "",
+                "comValue": "",
+                "compareTo": "literal",
+                "operator": "==",
+                "option": "ignorecase"
+            },
+            "groups": [
+                [
+                    {
+                        "claim": "samlEnabled",
+                        "operator": "==",
+                        "compareTo": "literal",
+                        "comValue": "saml2",
+                        "option": "ignorecase",
+                        "dateTimeOffset": "0"
+                    }
+                ]
+            ],
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+        },
+        "samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfaf": {
+            "id": "samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfaf",
+            "componentType": "samlIdP",
+            "idpDomain": {
+                "value": "Saml2",
+                "templatized": false
+            },
+            "metadataUrl": {
+                "value": "setting-66708f00-462e-cb87-f07b-9f9c6b1e1c7d",
+                "templatized": true
+            },
+            "signRequests": true,
+            "messageSigningKey": {
+                "value": "B2C_1A_samlTestCert",
+                "templatized": false
+            },
+            "signatureAlgorithm": "Sha1",
+            "responseSignatures": true,
+            "assertionsEncrypted": false,
+            "assertionDecryptionKey": {
+                "value": "",
+                "templatized": false
+            },
+            "metadataSigningKey": {
+                "value": "",
+                "templatized": false
+            },
+            "requestUser": false,
+            "requestUserClaim": "",
+            "issuerIdPartnerClaimType": "assertionSubjectName",
+            "outputClaims": [
+                {
+                    "claimId": "displayName",
+                    "partnerClaimType": "displayName",
+                    "defaultValue": "",
+                    "alwaysUseDefaultValue": false
+                },
+                {
+                    "claimId": "signInName",
+                    "partnerClaimType": "email",
+                    "defaultValue": "",
+                    "alwaysUseDefaultValue": false
+                },
+                {
+                    "claimId": "accountEnabled",
+                    "partnerClaimType": "",
+                    "defaultValue": "false",
+                    "alwaysUseDefaultValue": true
+                }
+            ],
+            "sessionManagement": {
+                "option": "alwaysExecute",
+                "sessionId": ""
+            },
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+        },
+        "errorPage-cdbf1bec-b75a-43ef-cd88-5035bd3fa947": {
+            "id": "errorPage-cdbf1bec-b75a-43ef-cd88-5035bd3fa947",
+            "componentType": "errorPage",
+            "contentDefinition": {
+                "value": "",
+                "templatized": false
+            },
+            "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8",
+            "entries": [
+                {
+                    "sourceType": "literal",
+                    "source": "Not a supported authentication method"
+                }
+            ]
         }
     },
     "flowcharts": {
@@ -531,105 +632,41 @@
             "flowchartName": "SignInSignUp",
             "flowchartType": "UserJourney",
             "components": [
-                "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
-                "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd",
-                "aadRead-24e20228-6f4d-c189-860b-8b331978610d",
                 "tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e",
-                "samlIdP-ecd36f27-7949-c0f6-83cd-2a7cb873a965",
                 "aadCreate-144f0d0d-bddb-2224-1989-b586fcc259b4",
                 "aadRead-5911f616-c49d-f2c8-ebf2-9d9bd329121c",
                 "conditionals-d8ea4d3d-7b32-e86d-07cc-5bdb2338860d",
-                "samlIdP-bb563d0d-258c-d718-1242-5f377feb4a37",
-                "setClaims-45d9f622-0a6e-6b12-71de-365784859d58"
+                "setClaims-45d9f622-0a6e-6b12-71de-365784859d58",
+                "conditionals-ac15edb3-a10e-a25c-4bd0-d6e698f85bd9",
+                "samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869e",
+                "conditionals-187e895d-bbe3-5bcf-bf6c-5ba1d71cd97a",
+                "samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfaf",
+                "errorPage-cdbf1bec-b75a-43ef-cd88-5035bd3fa947"
             ],
             "nodes": [
-                {
-                    "id": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
-                    "type": "process",
-                    "componentType": "signIn",
-                    "position": {
-                        "x": 483.6354064941406,
-                        "y": -42
-                    },
-                    "data": {
-                        "label": "signIn Component"
-                    },
-                    "width": 118,
-                    "height": 29,
-                    "selected": false,
-                    "dragging": true
-                },
-                {
-                    "id": "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd",
-                    "parentNodeId": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
-                    "type": "process",
-                    "componentType": "userInputPage",
-                    "linkId": true,
-                    "linkType": "localAccountSignIn",
-                    "position": {
-                        "x": 659.7031097412109,
-                        "y": 161.5
-                    },
-                    "data": {
-                        "label": "localAccountSignIn"
-                    },
-                    "width": 120,
-                    "height": 29
-                },
-                {
-                    "id": "aadRead-24e20228-6f4d-c189-860b-8b331978610d",
-                    "type": "process",
-                    "componentType": "aadRead",
-                    "position": {
-                        "x": 569.8591241050348,
-                        "y": 530.8540693594521
-                    },
-                    "data": {
-                        "label": "AAD Read"
-                    },
-                    "width": 71,
-                    "height": 29
-                },
                 {
                     "id": "tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e",
                     "type": "process",
                     "componentType": "tokenIssuer",
                     "position": {
-                        "x": 465.41970701664525,
-                        "y": 626.0990407680904
+                        "x": 445.41970701664525,
+                        "y": 625.0990407680904
                     },
                     "data": {
                         "label": "Token Issuer"
                     },
                     "width": 84,
-                    "height": 29
-                },
-                {
-                    "id": "samlIdP-ecd36f27-7949-c0f6-83cd-2a7cb873a965",
-                    "parentNodeId": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
-                    "type": "process",
-                    "componentType": "samlIdP",
-                    "linkId": true,
-                    "linkType": "samlIdP",
-                    "position": {
-                        "x": 322.2212799573516,
-                        "y": 172.4484879259481
-                    },
-                    "data": {
-                        "label": "Saml_Federation"
-                    },
+                    "height": 29,
                     "selected": false,
-                    "dragging": true,
-                    "width": 107,
-                    "height": 29
+                    "dragging": true
                 },
                 {
                     "id": "aadCreate-144f0d0d-bddb-2224-1989-b586fcc259b4",
                     "type": "process",
                     "componentType": "aadCreate",
                     "position": {
-                        "x": 494.6346231495148,
-                        "y": 420.7879223112011
+                        "x": 548.6346231495148,
+                        "y": 452.7879223112011
                     },
                     "data": {
                         "label": "AAD Create"
@@ -644,8 +681,8 @@
                     "type": "process",
                     "componentType": "aadRead",
                     "position": {
-                        "x": 341.1673453503334,
-                        "y": 249.52420733721686
+                        "x": 363.1673453503334,
+                        "y": 281.52420733721686
                     },
                     "data": {
                         "label": "AAD Read"
@@ -660,8 +697,8 @@
                     "type": "decision",
                     "componentType": "conditionals",
                     "position": {
-                        "x": 326.90257192577917,
-                        "y": 350.3132353580295
+                        "x": 355.90257192577917,
+                        "y": 381.3132353580295
                     },
                     "data": {
                         "label": "Conditional"
@@ -670,25 +707,6 @@
                     "height": 102,
                     "selected": false,
                     "dragging": true
-                },
-                {
-                    "id": "samlIdP-bb563d0d-258c-d718-1242-5f377feb4a37",
-                    "parentNodeId": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
-                    "type": "process",
-                    "componentType": "samlIdP",
-                    "linkId": true,
-                    "linkType": "samlIdP",
-                    "position": {
-                        "x": 158.7129455144426,
-                        "y": 173.33876813407426
-                    },
-                    "data": {
-                        "label": "SAML_Federation2"
-                    },
-                    "selected": false,
-                    "dragging": true,
-                    "width": 119,
-                    "height": 29
                 },
                 {
                     "id": "setClaims-45d9f622-0a6e-6b12-71de-365784859d58",
@@ -703,76 +721,91 @@
                     },
                     "width": 72,
                     "height": 29,
+                    "selected": false,
+                    "dragging": true
+                },
+                {
+                    "id": "conditionals-ac15edb3-a10e-a25c-4bd0-d6e698f85bd9",
+                    "type": "decision",
+                    "componentType": "conditionals",
+                    "position": {
+                        "x": 497.51099708729083,
+                        "y": -29.384774281367356
+                    },
+                    "data": {
+                        "label": "Conditional"
+                    },
+                    "width": 102,
+                    "height": 102,
+                    "selected": false,
+                    "dragging": true
+                },
+                {
+                    "id": "samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869e",
+                    "type": "process",
+                    "componentType": "samlIdP",
+                    "position": {
+                        "x": 328.7019804796663,
+                        "y": 150.183956203234
+                    },
+                    "data": {
+                        "label": "SAML IdP Authentication"
+                    },
+                    "width": 153,
+                    "height": 29,
+                    "selected": false,
+                    "dragging": true
+                },
+                {
+                    "id": "conditionals-187e895d-bbe3-5bcf-bf6c-5ba1d71cd97a",
+                    "type": "decision",
+                    "componentType": "conditionals",
+                    "position": {
+                        "x": 771.7529302838949,
+                        "y": 31.016800639391818
+                    },
+                    "data": {
+                        "label": "Conditional"
+                    },
+                    "width": 102,
+                    "height": 102,
+                    "selected": false,
+                    "dragging": true
+                },
+                {
+                    "id": "samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfaf",
+                    "type": "process",
+                    "componentType": "samlIdP",
+                    "position": {
+                        "x": 739.9409802932173,
+                        "y": 173.0243144790789
+                    },
+                    "data": {
+                        "label": "SAML IdP Authentication"
+                    },
+                    "width": 153,
+                    "height": 29,
+                    "selected": false,
+                    "dragging": true
+                },
+                {
+                    "id": "errorPage-cdbf1bec-b75a-43ef-cd88-5035bd3fa947",
+                    "type": "process",
+                    "componentType": "errorPage",
+                    "position": {
+                        "x": 1035.8143273108635,
+                        "y": 129.16012837470066
+                    },
+                    "data": {
+                        "label": "Error Page"
+                    },
+                    "width": 75,
+                    "height": 29,
                     "selected": true,
                     "dragging": true
                 }
             ],
             "edges": [
-                {
-                    "source": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
-                    "sourceHandle": null,
-                    "target": "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd",
-                    "targetHandle": null,
-                    "markerEnd": {
-                        "type": "arrowclosed"
-                    },
-                    "style": {
-                        "stroke": "green"
-                    },
-                    "id": "reactflow__edge-signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026-localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd"
-                },
-                {
-                    "source": "aadRead-24e20228-6f4d-c189-860b-8b331978610d",
-                    "sourceHandle": "down",
-                    "target": "tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e",
-                    "targetHandle": null,
-                    "markerEnd": {
-                        "type": "arrowclosed"
-                    },
-                    "style": {
-                        "stroke": "green"
-                    },
-                    "id": "reactflow__edge-aadRead-24e20228-6f4d-c189-860b-8b331978610ddown-tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e"
-                },
-                {
-                    "source": "localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dd",
-                    "sourceHandle": "down",
-                    "target": "aadRead-24e20228-6f4d-c189-860b-8b331978610d",
-                    "targetHandle": null,
-                    "markerEnd": {
-                        "type": "arrowclosed"
-                    },
-                    "style": {
-                        "stroke": "green"
-                    },
-                    "id": "reactflow__edge-localAccountSignIn-cf486dc4-3c55-dbd8-02cf-2c1e010fe7dddown-aadRead-24e20228-6f4d-c189-860b-8b331978610d"
-                },
-                {
-                    "source": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
-                    "sourceHandle": null,
-                    "target": "samlIdP-ecd36f27-7949-c0f6-83cd-2a7cb873a965",
-                    "targetHandle": null,
-                    "markerEnd": {
-                        "type": "arrowclosed"
-                    },
-                    "style": {
-                        "stroke": "green"
-                    },
-                    "id": "reactflow__edge-signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026-samlIdP-ecd36f27-7949-c0f6-83cd-2a7cb873a965"
-                },
-                {
-                    "source": "samlIdP-ecd36f27-7949-c0f6-83cd-2a7cb873a965",
-                    "sourceHandle": "down",
-                    "target": "aadRead-5911f616-c49d-f2c8-ebf2-9d9bd329121c",
-                    "targetHandle": null,
-                    "markerEnd": {
-                        "type": "arrowclosed"
-                    },
-                    "style": {
-                        "stroke": "green"
-                    },
-                    "id": "reactflow__edge-samlIdP-ecd36f27-7949-c0f6-83cd-2a7cb873a965down-aadRead-5911f616-c49d-f2c8-ebf2-9d9bd329121c"
-                },
                 {
                     "source": "aadRead-5911f616-c49d-f2c8-ebf2-9d9bd329121c",
                     "sourceHandle": "down",
@@ -826,9 +859,9 @@
                     "id": "reactflow__edge-conditionals-d8ea4d3d-7b32-e86d-07cc-5bdb2338860ddown-tokenIssuer-7626e3e6-26b5-ba89-2e37-c970dc060b0e"
                 },
                 {
-                    "source": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
-                    "sourceHandle": null,
-                    "target": "samlIdP-bb563d0d-258c-d718-1242-5f377feb4a37",
+                    "source": "setClaims-45d9f622-0a6e-6b12-71de-365784859d58",
+                    "sourceHandle": "down",
+                    "target": "conditionals-ac15edb3-a10e-a25c-4bd0-d6e698f85bd9",
                     "targetHandle": null,
                     "markerEnd": {
                         "type": "arrowclosed"
@@ -836,10 +869,23 @@
                     "style": {
                         "stroke": "green"
                     },
-                    "id": "reactflow__edge-signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026-samlIdP-bb563d0d-258c-d718-1242-5f377feb4a37"
+                    "id": "reactflow__edge-setClaims-45d9f622-0a6e-6b12-71de-365784859d58down-conditionals-ac15edb3-a10e-a25c-4bd0-d6e698f85bd9"
                 },
                 {
-                    "source": "samlIdP-bb563d0d-258c-d718-1242-5f377feb4a37",
+                    "source": "conditionals-ac15edb3-a10e-a25c-4bd0-d6e698f85bd9",
+                    "sourceHandle": "down",
+                    "target": "samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869e",
+                    "targetHandle": null,
+                    "markerEnd": {
+                        "type": "arrowclosed"
+                    },
+                    "style": {
+                        "stroke": "green"
+                    },
+                    "id": "reactflow__edge-conditionals-ac15edb3-a10e-a25c-4bd0-d6e698f85bd9down-samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869e"
+                },
+                {
+                    "source": "samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869e",
                     "sourceHandle": "down",
                     "target": "aadRead-5911f616-c49d-f2c8-ebf2-9d9bd329121c",
                     "targetHandle": null,
@@ -849,12 +895,25 @@
                     "style": {
                         "stroke": "green"
                     },
-                    "id": "reactflow__edge-samlIdP-bb563d0d-258c-d718-1242-5f377feb4a37down-aadRead-5911f616-c49d-f2c8-ebf2-9d9bd329121c"
+                    "id": "reactflow__edge-samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869edown-aadRead-5911f616-c49d-f2c8-ebf2-9d9bd329121c"
                 },
                 {
-                    "source": "setClaims-45d9f622-0a6e-6b12-71de-365784859d58",
+                    "source": "conditionals-ac15edb3-a10e-a25c-4bd0-d6e698f85bd9",
+                    "sourceHandle": "right",
+                    "target": "conditionals-187e895d-bbe3-5bcf-bf6c-5ba1d71cd97a",
+                    "targetHandle": null,
+                    "markerEnd": {
+                        "type": "arrowclosed"
+                    },
+                    "style": {
+                        "stroke": "red"
+                    },
+                    "id": "reactflow__edge-conditionals-ac15edb3-a10e-a25c-4bd0-d6e698f85bd9right-conditionals-187e895d-bbe3-5bcf-bf6c-5ba1d71cd97a"
+                },
+                {
+                    "source": "conditionals-187e895d-bbe3-5bcf-bf6c-5ba1d71cd97a",
                     "sourceHandle": "down",
-                    "target": "signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026",
+                    "target": "samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfaf",
                     "targetHandle": null,
                     "markerEnd": {
                         "type": "arrowclosed"
@@ -862,7 +921,33 @@
                     "style": {
                         "stroke": "green"
                     },
-                    "id": "reactflow__edge-setClaims-45d9f622-0a6e-6b12-71de-365784859d58down-signIn-e96a2a13-5f21-3061-71fa-ed8c9e971026"
+                    "id": "reactflow__edge-conditionals-187e895d-bbe3-5bcf-bf6c-5ba1d71cd97adown-samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfaf"
+                },
+                {
+                    "source": "samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfaf",
+                    "sourceHandle": "down",
+                    "target": "aadRead-5911f616-c49d-f2c8-ebf2-9d9bd329121c",
+                    "targetHandle": null,
+                    "markerEnd": {
+                        "type": "arrowclosed"
+                    },
+                    "style": {
+                        "stroke": "green"
+                    },
+                    "id": "reactflow__edge-samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfafdown-aadRead-5911f616-c49d-f2c8-ebf2-9d9bd329121c"
+                },
+                {
+                    "source": "conditionals-187e895d-bbe3-5bcf-bf6c-5ba1d71cd97a",
+                    "sourceHandle": "right",
+                    "target": "errorPage-cdbf1bec-b75a-43ef-cd88-5035bd3fa947",
+                    "targetHandle": null,
+                    "markerEnd": {
+                        "type": "arrowclosed"
+                    },
+                    "style": {
+                        "stroke": "red"
+                    },
+                    "id": "reactflow__edge-conditionals-187e895d-bbe3-5bcf-bf6c-5ba1d71cd97aright-errorPage-cdbf1bec-b75a-43ef-cd88-5035bd3fa947"
                 }
             ],
             "templateName": "Sign In Sign Up Password Reset Migrated User.json"
@@ -1567,6 +1652,18 @@
                         "fieldPaths": [
                             "metadataUrl"
                         ]
+                    },
+                    "samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869e": {
+                        "nodeId": "samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869e",
+                        "fieldPaths": [
+                            "metadataUrl"
+                        ]
+                    },
+                    "samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfaf": {
+                        "nodeId": "samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfaf",
+                        "fieldPaths": [
+                            "metadataUrl"
+                        ]
                     }
                 }
             }
@@ -1669,6 +1766,22 @@
                 "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
             },
             "setClaims-45d9f622-0a6e-6b12-71de-365784859d58": {
+                "settings": [],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            },
+            "samlIdP-99ce18d5-e560-d5b9-7f9d-b17daa43869e": {
+                "settings": [
+                    "setting-66708f00-462e-cb87-f07b-9f9c6b1e1c7d"
+                ],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            },
+            "samlIdP-4cc8ee37-e9cd-d6a1-f670-0ed27fa2cfaf": {
+                "settings": [
+                    "setting-66708f00-462e-cb87-f07b-9f9c6b1e1c7d"
+                ],
+                "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
+            },
+            "errorPage-cdbf1bec-b75a-43ef-cd88-5035bd3fa947": {
                 "settings": [],
                 "flowchart": "userjourney-bb6df4e5-9def-7f5e-7a33-6ac253de56d8"
             }

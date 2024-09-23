@@ -192,41 +192,29 @@
                 <DisplayName>Branch Variable 4</DisplayName>
                 <DataType>boolean</DataType>
             </ClaimType>
+            <ClaimType Id="BranchVar_5">
+                <DisplayName>Branch Variable 5</DisplayName>
+                <DataType>boolean</DataType>
+            </ClaimType>
+            <ClaimType Id="BranchVar_6">
+                <DisplayName>Branch Variable 6</DisplayName>
+                <DataType>boolean</DataType>
+            </ClaimType>
+            <ClaimType Id="BranchVar_7">
+                <DisplayName>Branch Variable 7</DisplayName>
+                <DataType>boolean</DataType>
+            </ClaimType>
             <ClaimType Id="jexg_BooleanCopyDummy">
                 <DisplayName>Boolean Copy Dummy</DisplayName>
                 <DataType>boolean</DataType>
             </ClaimType>
-            <ClaimType Id="grant_type_0">
-                <DisplayName>grant_type</DisplayName>
-                <DataType>string</DataType>
-            </ClaimType>
-            <ClaimType Id="scope_0">
-                <DisplayName>scope</DisplayName>
-                <DataType>string</DataType>
-            </ClaimType>
-            <ClaimType Id="nca_0">
-                <DisplayName>nca</DisplayName>
-                <DataType>string</DataType>
-            </ClaimType>
-            <ClaimType Id="client_id_0">
-                <DisplayName>client_id</DisplayName>
-                <DataType>string</DataType>
-            </ClaimType>
-            <ClaimType Id="resource_id_0">
-                <DisplayName>resource_id</DisplayName>
-                <DataType>string</DataType>
+            <ClaimType Id="Conditional_Condition0">
+                <DisplayName>Conditional Evaluation Temp Condition 47</DisplayName>
+                <DataType>boolean</DataType>
             </ClaimType>
             <ClaimType Id="strCmpBuffer">
                 <DisplayName>strCmpBuffer</DisplayName>
                 <DataType>string</DataType>
-            </ClaimType>
-            <ClaimType Id="estsRequestId">
-                <DisplayName>estsRequestId</DisplayName>
-                <DataType>string</DataType>
-            </ClaimType>
-            <ClaimType Id="authMethodsUsedForCA">
-                <DisplayName>authMethodsUsedForCA</DisplayName>
-                <DataType>stringCollection</DataType>
             </ClaimType>
             <ClaimType Id="upnUserName_0">
                 <DisplayName>upnUserName</DisplayName>
@@ -248,6 +236,15 @@
                 <DisplayName>isFederatedLogin</DisplayName>
                 <DataType>boolean</DataType>
             </ClaimType>
+            <ClaimType Id="Conditional_Condition0_0">
+                <DisplayName>Conditional Evaluation Temp Condition 54</DisplayName>
+                <DataType>boolean</DataType>
+            </ClaimType>
+            <ClaimType Id="Error_Page_DisplayLiteral">
+                <DisplayName>Error Display Message</DisplayName>
+                <DataType>string</DataType>
+                <UserInputType>Paragraph</UserInputType>
+            </ClaimType>
             <ClaimType Id="userIdentitiesForRead">
                 <DisplayName>userIdentitiesForRead</DisplayName>
                 <DataType>userIdentityCollection</DataType>
@@ -256,8 +253,8 @@
                 <DisplayName>emptyUserIdentities</DisplayName>
                 <DataType>userIdentityCollection</DataType>
             </ClaimType>
-            <ClaimType Id="Conditional_Condition0">
-                <DisplayName>Conditional Evaluation Temp Condition 59</DisplayName>
+            <ClaimType Id="Conditional_Condition0_1">
+                <DisplayName>Conditional Evaluation Temp Condition 58</DisplayName>
                 <DataType>boolean</DataType>
             </ClaimType>
             <ClaimType Id="strCmpPwdBuffer">
@@ -309,16 +306,69 @@
             </PredicateValidation>
         </PredicateValidations>
         <ClaimsTransformations>
-            <ClaimsTransformation Id="Username_Password_Validation_makeAuthMethodsCollection"
-                TransformationMethod="AddItemToStringCollection">
+            <ClaimsTransformation Id="Conditional_Condition0_Input_StrCoerceA"
+                TransformationMethod="FormatStringClaim">
                 <InputClaims>
-                    <InputClaim ClaimTypeReferenceId="strCmpBuffer" TransformationClaimType="item" />
-                    <InputClaim ClaimTypeReferenceId="authMethodsUsedForCA"
-                        TransformationClaimType="collection" />
+                    <InputClaim ClaimTypeReferenceId="samlEnabled"
+                        TransformationClaimType="inputClaim" />
+                </InputClaims>
+                <InputParameters>
+                    <InputParameter Id="stringFormat" DataType="string" Value="{0}" />
+                </InputParameters>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="strCmpBuffer"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="Conditional_Condition0_Input_StrCoerceB"
+                TransformationMethod="FormatStringClaim">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="strCmpBuffer"
+                        TransformationClaimType="inputClaim" />
+                </InputClaims>
+                <InputParameters>
+                    <InputParameter Id="stringFormat" DataType="string" Value="{0}" />
+                </InputParameters>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="samlEnabled"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="Conditional_Condition0_Strcmp"
+                TransformationMethod="CompareClaimToValue">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="samlEnabled"
+                        TransformationClaimType="inputClaim1" />
+                </InputClaims>
+                <InputParameters>
+                    <InputParameter Id="compareTo" DataType="string" Value="saml1" />
+                    <InputParameter Id="operator" DataType="string" Value="equal" />
+                    <InputParameter Id="ignoreCase" DataType="string" Value="true" />
+                </InputParameters>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="Conditional_Condition0"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="Conditional_SetFalseBranchVar"
+                TransformationMethod="NotClaims">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="Conditional_Condition0"
+                        TransformationClaimType="inputClaim" />
                 </InputClaims>
                 <OutputClaims>
-                    <OutputClaim ClaimTypeReferenceId="authMethodsUsedForCA"
-                        TransformationClaimType="collection" />
+                    <OutputClaim ClaimTypeReferenceId="BranchVar_1"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="Conditional_SetTrueBranchVar" TransformationMethod="NotClaims">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="BranchVar_1"
+                        TransformationClaimType="inputClaim" />
+                </InputClaims>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="BranchVar_0"
+                        TransformationClaimType="outputClaim" />
                 </OutputClaims>
             </ClaimsTransformation>
             <ClaimsTransformation Id="CreateRandomUPNUserName"
@@ -358,15 +408,81 @@
                         TransformationClaimType="userIdentity" />
                 </OutputClaims>
             </ClaimsTransformation>
-            <ClaimsTransformation Id="branchJoinFinalBooleanOr4" TransformationMethod="OrClaims">
+            <ClaimsTransformation Id="Conditional_Condition0_Input_StrCoerceA_0"
+                TransformationMethod="FormatStringClaim">
                 <InputClaims>
-                    <InputClaim ClaimTypeReferenceId="BranchVar_1"
+                    <InputClaim ClaimTypeReferenceId="samlEnabled"
+                        TransformationClaimType="inputClaim" />
+                </InputClaims>
+                <InputParameters>
+                    <InputParameter Id="stringFormat" DataType="string" Value="{0}" />
+                </InputParameters>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="strCmpBuffer"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="Conditional_Condition0_Input_StrCoerceB_0"
+                TransformationMethod="FormatStringClaim">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="strCmpBuffer"
+                        TransformationClaimType="inputClaim" />
+                </InputClaims>
+                <InputParameters>
+                    <InputParameter Id="stringFormat" DataType="string" Value="{0}" />
+                </InputParameters>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="samlEnabled"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="Conditional_Condition0_Strcmp_0"
+                TransformationMethod="CompareClaimToValue">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="samlEnabled"
+                        TransformationClaimType="inputClaim1" />
+                </InputClaims>
+                <InputParameters>
+                    <InputParameter Id="compareTo" DataType="string" Value="saml2" />
+                    <InputParameter Id="operator" DataType="string" Value="equal" />
+                    <InputParameter Id="ignoreCase" DataType="string" Value="true" />
+                </InputParameters>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="Conditional_Condition0_0"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="Conditional_SetFalseBranchVar_0"
+                TransformationMethod="NotClaims">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="Conditional_Condition0_0"
+                        TransformationClaimType="inputClaim" />
+                </InputClaims>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="BranchVar_3"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="Conditional_SetTrueBranchVar_0"
+                TransformationMethod="NotClaims">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="BranchVar_3"
+                        TransformationClaimType="inputClaim" />
+                </InputClaims>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="BranchVar_2"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="branchJoinFinalBooleanOr13" TransformationMethod="OrClaims">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="BranchVar_0"
                         TransformationClaimType="inputClaim1" />
                     <InputClaim ClaimTypeReferenceId="BranchVar_2"
                         TransformationClaimType="inputClaim2" />
                 </InputClaims>
                 <OutputClaims>
-                    <OutputClaim ClaimTypeReferenceId="BranchVar_3"
+                    <OutputClaim ClaimTypeReferenceId="BranchVar_4"
                         TransformationClaimType="outputClaim" />
                 </OutputClaims>
             </ClaimsTransformation>
@@ -391,18 +507,29 @@
                         TransformationClaimType="inputClaim2" />
                 </InputClaims>
                 <OutputClaims>
-                    <OutputClaim ClaimTypeReferenceId="Conditional_Condition0"
+                    <OutputClaim ClaimTypeReferenceId="Conditional_Condition0_1"
                         TransformationClaimType="outputClaim" />
                 </OutputClaims>
             </ClaimsTransformation>
-            <ClaimsTransformation Id="Conditional_SetFalseBranchVar"
+            <ClaimsTransformation Id="Conditional_SetFalseBranchVar_1"
                 TransformationMethod="NotClaims">
                 <InputClaims>
-                    <InputClaim ClaimTypeReferenceId="Conditional_Condition0"
+                    <InputClaim ClaimTypeReferenceId="Conditional_Condition0_1"
                         TransformationClaimType="inputClaim" />
                 </InputClaims>
                 <OutputClaims>
-                    <OutputClaim ClaimTypeReferenceId="BranchVar_4"
+                    <OutputClaim ClaimTypeReferenceId="BranchVar_6"
+                        TransformationClaimType="outputClaim" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="Conditional_SetTrueBranchVar_1"
+                TransformationMethod="NotClaims">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="BranchVar_6"
+                        TransformationClaimType="inputClaim" />
+                </InputClaims>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="BranchVar_5"
                         TransformationClaimType="outputClaim" />
                 </OutputClaims>
             </ClaimsTransformation>
@@ -426,6 +553,18 @@
                 <OutputClaims>
                     <OutputClaim ClaimTypeReferenceId="userIdentities"
                         TransformationClaimType="collection" />
+                </OutputClaims>
+            </ClaimsTransformation>
+            <ClaimsTransformation Id="branchJoinFinalBooleanOr20" TransformationMethod="OrClaims">
+                <InputClaims>
+                    <InputClaim ClaimTypeReferenceId="BranchVar_5"
+                        TransformationClaimType="inputClaim1" />
+                    <InputClaim ClaimTypeReferenceId="BranchVar_6"
+                        TransformationClaimType="inputClaim2" />
+                </InputClaims>
+                <OutputClaims>
+                    <OutputClaim ClaimTypeReferenceId="BranchVar_7"
+                        TransformationClaimType="outputClaim" />
                 </OutputClaims>
             </ClaimsTransformation>
         </ClaimsTransformations>
@@ -1077,27 +1216,15 @@
                             AlwaysUseDefaultValue="true" />
                         <OutputClaim ClaimTypeReferenceId="BranchVar_4" DefaultValue="false"
                             AlwaysUseDefaultValue="true" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_5" DefaultValue="false"
+                            AlwaysUseDefaultValue="true" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_6" DefaultValue="false"
+                            AlwaysUseDefaultValue="true" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_7" DefaultValue="false"
+                            AlwaysUseDefaultValue="true" />
                         <OutputClaim ClaimTypeReferenceId="jexg_BooleanCopyDummy"
                             DefaultValue="true" AlwaysUseDefaultValue="true" />
                     </OutputClaims>
-                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-                </TechnicalProfile>
-                <TechnicalProfile Id="branchJoinProfile11">
-                    <DisplayName>Branch Join 11</DisplayName>
-                    <Protocol Name="Proprietary"
-                        Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-                    <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="BranchVar_1" DefaultValue="false" />
-                        <InputClaim ClaimTypeReferenceId="BranchVar_2" DefaultValue="false" />
-                    </InputClaims>
-                    <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="BranchVar_1" DefaultValue="false" />
-                        <OutputClaim ClaimTypeReferenceId="BranchVar_2" DefaultValue="false" />
-                        <OutputClaim ClaimTypeReferenceId="BranchVar_3" DefaultValue="false" />
-                    </OutputClaims>
-                    <OutputClaimsTransformations>
-                        <OutputClaimsTransformation ReferenceId="branchJoinFinalBooleanOr4" />
-                    </OutputClaimsTransformations>
                     <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
                 </TechnicalProfile>
                 <TechnicalProfile Id="Conditional">
@@ -1105,14 +1232,92 @@
                     <Protocol Name="Proprietary"
                         Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
                     <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_0" DefaultValue="false" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_1" DefaultValue="false" />
+                        <OutputClaim ClaimTypeReferenceId="samlEnabled" DefaultValue="" />
+                    </OutputClaims>
+                    <OutputClaimsTransformations>
+                        <OutputClaimsTransformation
+                            ReferenceId="Conditional_Condition0_Input_StrCoerceA" />
+                        <OutputClaimsTransformation
+                            ReferenceId="Conditional_Condition0_Input_StrCoerceB" />
+                        <OutputClaimsTransformation ReferenceId="Conditional_Condition0_Strcmp" />
+                        <OutputClaimsTransformation ReferenceId="Conditional_SetFalseBranchVar" />
+                        <OutputClaimsTransformation ReferenceId="Conditional_SetTrueBranchVar" />
+                    </OutputClaimsTransformations>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+                <TechnicalProfile Id="Conditional_0">
+                    <DisplayName>Conditional</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_2" DefaultValue="false" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_3" DefaultValue="false" />
+                        <OutputClaim ClaimTypeReferenceId="samlEnabled" DefaultValue="" />
+                    </OutputClaims>
+                    <OutputClaimsTransformations>
+                        <OutputClaimsTransformation
+                            ReferenceId="Conditional_Condition0_Input_StrCoerceA_0" />
+                        <OutputClaimsTransformation
+                            ReferenceId="Conditional_Condition0_Input_StrCoerceB_0" />
+                        <OutputClaimsTransformation ReferenceId="Conditional_Condition0_Strcmp_0" />
+                        <OutputClaimsTransformation ReferenceId="Conditional_SetFalseBranchVar_0" />
+                        <OutputClaimsTransformation ReferenceId="Conditional_SetTrueBranchVar_0" />
+                    </OutputClaimsTransformations>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+                <TechnicalProfile Id="branchJoinProfile9">
+                    <DisplayName>Branch Join 9</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="BranchVar_0" DefaultValue="false" />
+                        <InputClaim ClaimTypeReferenceId="BranchVar_2" DefaultValue="false" />
+                    </InputClaims>
+                    <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_0" DefaultValue="false" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_2" DefaultValue="false" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_4" DefaultValue="false" />
+                    </OutputClaims>
+                    <OutputClaimsTransformations>
+                        <OutputClaimsTransformation ReferenceId="branchJoinFinalBooleanOr13" />
+                    </OutputClaimsTransformations>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+                <TechnicalProfile Id="Conditional_1">
+                    <DisplayName>Conditional</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <OutputClaims>
                         <OutputClaim ClaimTypeReferenceId="jexg_BooleanCopyDummy"
                             DefaultValue="true" AlwaysUseDefaultValue="true" />
-                        <OutputClaim ClaimTypeReferenceId="BranchVar_4" DefaultValue="false" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_5" DefaultValue="false" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_6" DefaultValue="false" />
                         <OutputClaim ClaimTypeReferenceId="accountEnabled" DefaultValue="false" />
                     </OutputClaims>
                     <OutputClaimsTransformations>
                         <OutputClaimsTransformation ReferenceId="Conditional_Condition0_Boolcmp" />
-                        <OutputClaimsTransformation ReferenceId="Conditional_SetFalseBranchVar" />
+                        <OutputClaimsTransformation ReferenceId="Conditional_SetFalseBranchVar_1" />
+                        <OutputClaimsTransformation ReferenceId="Conditional_SetTrueBranchVar_1" />
+                    </OutputClaimsTransformations>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+                <TechnicalProfile Id="branchJoinProfile14">
+                    <DisplayName>Branch Join 14</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="BranchVar_5" DefaultValue="false" />
+                        <InputClaim ClaimTypeReferenceId="BranchVar_6" DefaultValue="false" />
+                    </InputClaims>
+                    <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_5" DefaultValue="false" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_6" DefaultValue="false" />
+                        <OutputClaim ClaimTypeReferenceId="BranchVar_7" DefaultValue="false" />
+                    </OutputClaims>
+                    <OutputClaimsTransformations>
+                        <OutputClaimsTransformation ReferenceId="branchJoinFinalBooleanOr20" />
                     </OutputClaimsTransformations>
                     <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
                 </TechnicalProfile>
@@ -1137,171 +1342,10 @@
             </TechnicalProfiles>
         </ClaimsProvider>
         <ClaimsProvider>
-            <DisplayName>Local Account SignIn</DisplayName>
-            <TechnicalProfiles>
-                <TechnicalProfile Id="Username_Password_Validation">
-                    <DisplayName>Username Password Validation</DisplayName>
-                    <Protocol Name="OpenIdConnect" />
-                    <Metadata>
-                        <Item Key="UserMessageIfInvalidPassword">Username password is invalid.
-                            Please re-enter your credentials.</Item>
-                        <Item Key="UserMessageIfClaimsPrincipalDoesNotExist">Username password is
-                            invalid. Please re-enter your credentials.</Item>
-                        <Item Key="ProviderName">https://sts.windows.net/</Item>
-                        <Item Key="METADATA">
-                            https://login.microsoftonline.com/{tenant}/.well-known/openid-configuration</Item>
-                        <Item Key="authorization_endpoint">
-                            https://login.microsoftonline.com/{tenant}/oauth2/token</Item>
-                        <Item Key="response_types">id_token</Item>
-                        <Item Key="response_mode">query</Item>
-                        <Item Key="scope">email openid</Item>
-                        <Item Key="UsePolicyInRedirectUri">false</Item>
-                        <Item Key="HttpBinding">POST</Item>
-                        <Item Key="client_id">{settings:proxyIefAppId}</Item>
-                        <Item Key="IdTokenAudience">{settings:iefAppId}</Item>
-                    </Metadata>
-                    <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="signInName" DefaultValue=""
-                            PartnerClaimType="username" Required="true" />
-                        <InputClaim ClaimTypeReferenceId="password" DefaultValue="" Required="true" />
-                        <InputClaim ClaimTypeReferenceId="grant_type_0" DefaultValue="Password"
-                            AlwaysUseDefaultValue="true" PartnerClaimType="grant_type" />
-                        <InputClaim ClaimTypeReferenceId="scope_0" DefaultValue="openid"
-                            AlwaysUseDefaultValue="true" PartnerClaimType="scope" />
-                        <InputClaim ClaimTypeReferenceId="nca_0" DefaultValue="1"
-                            AlwaysUseDefaultValue="true" PartnerClaimType="nca" />
-                        <InputClaim ClaimTypeReferenceId="client_id_0"
-                            DefaultValue="{settings:proxyIefAppId}" AlwaysUseDefaultValue="true"
-                            PartnerClaimType="client_id" />
-                        <InputClaim ClaimTypeReferenceId="resource_id_0"
-                            DefaultValue="{settings:iefAppId}" AlwaysUseDefaultValue="true"
-                            PartnerClaimType="resource" />
-                    </InputClaims>
-                    <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="objectId" DefaultValue=""
-                            PartnerClaimType="oid" />
-                        <OutputClaim ClaimTypeReferenceId="strCmpBuffer" DefaultValue="Password"
-                            AlwaysUseDefaultValue="true" />
-                        <OutputClaim ClaimTypeReferenceId="estsRequestId"
-                            DefaultValue="00000000-0000-0000-0000-000000000000"
-                            PartnerClaimType="estsRequestId" />
-                    </OutputClaims>
-                    <OutputClaimsTransformations>
-                        <OutputClaimsTransformation
-                            ReferenceId="Username_Password_Validation_makeAuthMethodsCollection" />
-                    </OutputClaimsTransformations>
-                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-                </TechnicalProfile>
-            </TechnicalProfiles>
-        </ClaimsProvider>
-        <ClaimsProvider>
-            <DisplayName>Local Account</DisplayName>
-            <TechnicalProfiles>
-                <TechnicalProfile Id="localAccountSignInProfile">
-                    <DisplayName>Local Account Signin</DisplayName>
-                    <Protocol Name="Proprietary"
-                        Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-                    <Metadata>
-                        <Item Key="setting.forgotPasswordLinkLocation">None</Item>
-                        <Item Key="setting.showSignupLink">false</Item>
-                        <Item Key="IncludeClaimResolvingInClaimsHandling">true</Item>
-                        <Item Key="ContentDefinitionReferenceId">api.localaccountsignin</Item>
-                        <Item Key="setting.enableRememberMe">True</Item>
-                        <Item Key="setting.operatingMode">Email</Item>
-                    </Metadata>
-                    <IncludeInSso>false</IncludeInSso>
-                    <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="signInName"
-                            DefaultValue="{OIDC:LoginHint}" AlwaysUseDefaultValue="true" />
-                    </InputClaims>
-                    <DisplayClaims>
-                        <DisplayClaim ClaimTypeReferenceId="signInName" Required="true" />
-                        <DisplayClaim ClaimTypeReferenceId="password" Required="true" />
-                    </DisplayClaims>
-                    <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="objectId" DefaultValue="" />
-                        <OutputClaim ClaimTypeReferenceId="authMethodsUsedForCA" />
-                        <OutputClaim ClaimTypeReferenceId="signInName" DefaultValue="" />
-                        <OutputClaim ClaimTypeReferenceId="BranchVar_0" DefaultValue="true"
-                            AlwaysUseDefaultValue="true" />
-                    </OutputClaims>
-                    <ValidationTechnicalProfiles>
-                        <ValidationTechnicalProfile ReferenceId="Username_Password_Validation" />
-                    </ValidationTechnicalProfiles>
-                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-                </TechnicalProfile>
-            </TechnicalProfiles>
-        </ClaimsProvider>
-        <ClaimsProvider>
             <DisplayName>B2C</DisplayName>
             <TechnicalProfiles>
-                <TechnicalProfile Id="Saml_Federation">
-                    <DisplayName>Saml_Federation</DisplayName>
-                    <Protocol Name="SAML2" />
-                    <Metadata>
-                        <Item Key="PartnerEntity">{settings:Saml_Metadata}</Item>
-                        <Item Key="WantsSignedRequests">true</Item>
-                        <Item Key="WantsSignedAssertions">true</Item>
-                        <Item Key="ResponsesSigned">true</Item>
-                        <Item Key="WantsEncryptedAssertions">false</Item>
-                        <Item Key="XmlSignatureAlgorithm">Sha1</Item>
-                    </Metadata>
-                    <CryptographicKeys>
-                        <Key Id="SamlMessageSigning" StorageReferenceId="{settings:SAMLCert}" />
-                    </CryptographicKeys>
-                    <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="issuerUserId" DefaultValue=""
-                            PartnerClaimType="assertionSubjectName" />
-                        <OutputClaim ClaimTypeReferenceId="identityProvider_0" DefaultValue="B2C"
-                            AlwaysUseDefaultValue="true" />
-                        <OutputClaim ClaimTypeReferenceId="signInName" DefaultValue=""
-                            PartnerClaimType="email" />
-                        <OutputClaim ClaimTypeReferenceId="displayName" DefaultValue=""
-                            PartnerClaimType="displayName" />
-                        <OutputClaim ClaimTypeReferenceId="accountEnabled" DefaultValue="false"
-                            AlwaysUseDefaultValue="true" PartnerClaimType="" />
-                        <OutputClaim ClaimTypeReferenceId="isFederatedLogin" DefaultValue="true"
-                            AlwaysUseDefaultValue="true" />
-                    </OutputClaims>
-                    <OutputClaimsTransformations>
-                        <OutputClaimsTransformation ReferenceId="CreateRandomUPNUserName" />
-                        <OutputClaimsTransformation ReferenceId="CreateUserPrincipalName" />
-                        <OutputClaimsTransformation ReferenceId="CreateUserForeignID" />
-                    </OutputClaimsTransformations>
-                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-                </TechnicalProfile>
-            </TechnicalProfiles>
-        </ClaimsProvider>
-        <ClaimsProvider>
-            <DisplayName>Claims Provider Selection Branch Handling</DisplayName>
-            <TechnicalProfiles>
-                <TechnicalProfile Id="Saml_Federation_ClaimsProviderSelector">
-                    <DisplayName>Saml_Federation</DisplayName>
-                    <Protocol Name="Proprietary"
-                        Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-                    <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="BranchVar_1" DefaultValue="true"
-                            AlwaysUseDefaultValue="true" />
-                    </OutputClaims>
-                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-                </TechnicalProfile>
-                <TechnicalProfile Id="SAML_Federation2_ClaimsProviderSelector">
-                    <DisplayName>SAML_Federation2</DisplayName>
-                    <Protocol Name="Proprietary"
-                        Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-                    <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="BranchVar_2" DefaultValue="true"
-                            AlwaysUseDefaultValue="true" />
-                    </OutputClaims>
-                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-                </TechnicalProfile>
-            </TechnicalProfiles>
-        </ClaimsProvider>
-        <ClaimsProvider>
-            <DisplayName>SAML2</DisplayName>
-            <TechnicalProfiles>
-                <TechnicalProfile Id="SAML_Federation2">
-                    <DisplayName>SAML_Federation2</DisplayName>
+                <TechnicalProfile Id="SAML_IdP_Authentication">
+                    <DisplayName>SAML IdP Authentication</DisplayName>
                     <Protocol Name="SAML2" />
                     <Metadata>
                         <Item Key="PartnerEntity">{settings:Saml_Metadata}</Item>
@@ -1317,7 +1361,42 @@
                     <OutputClaims>
                         <OutputClaim ClaimTypeReferenceId="issuerUserId" DefaultValue=""
                             PartnerClaimType="assertionSubjectName" />
-                        <OutputClaim ClaimTypeReferenceId="identityProvider_0" DefaultValue="SAML2"
+                        <OutputClaim ClaimTypeReferenceId="identityProvider_0" DefaultValue="B2C"
+                            AlwaysUseDefaultValue="true" />
+                        <OutputClaim ClaimTypeReferenceId="displayName" DefaultValue=""
+                            PartnerClaimType="displayName" />
+                        <OutputClaim ClaimTypeReferenceId="signInName" DefaultValue=""
+                            PartnerClaimType="email" />
+                        <OutputClaim ClaimTypeReferenceId="accountEnabled" DefaultValue="false"
+                            AlwaysUseDefaultValue="true" PartnerClaimType="" />
+                        <OutputClaim ClaimTypeReferenceId="isFederatedLogin" DefaultValue="true"
+                            AlwaysUseDefaultValue="true" />
+                    </OutputClaims>
+                    <OutputClaimsTransformations>
+                        <OutputClaimsTransformation ReferenceId="CreateRandomUPNUserName" />
+                        <OutputClaimsTransformation ReferenceId="CreateUserPrincipalName" />
+                        <OutputClaimsTransformation ReferenceId="CreateUserForeignID" />
+                    </OutputClaimsTransformations>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+                <TechnicalProfile Id="SAML_IdP_Authentication_0">
+                    <DisplayName>SAML IdP Authentication</DisplayName>
+                    <Protocol Name="SAML2" />
+                    <Metadata>
+                        <Item Key="PartnerEntity">{settings:Saml_Metadata}</Item>
+                        <Item Key="WantsSignedRequests">true</Item>
+                        <Item Key="WantsSignedAssertions">true</Item>
+                        <Item Key="ResponsesSigned">true</Item>
+                        <Item Key="WantsEncryptedAssertions">false</Item>
+                        <Item Key="XmlSignatureAlgorithm">Sha1</Item>
+                    </Metadata>
+                    <CryptographicKeys>
+                        <Key Id="SamlMessageSigning" StorageReferenceId="B2C_1A_samlTestCert" />
+                    </CryptographicKeys>
+                    <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="issuerUserId" DefaultValue=""
+                            PartnerClaimType="assertionSubjectName" />
+                        <OutputClaim ClaimTypeReferenceId="identityProvider_0" DefaultValue="B2C"
                             AlwaysUseDefaultValue="true" />
                         <OutputClaim ClaimTypeReferenceId="displayName" DefaultValue=""
                             PartnerClaimType="displayName" />
@@ -1338,38 +1417,55 @@
             </TechnicalProfiles>
         </ClaimsProvider>
         <ClaimsProvider>
+            <DisplayName>Error Pages</DisplayName>
+            <TechnicalProfiles>
+                <TechnicalProfile Id="Error_Page">
+                    <DisplayName>Error Page</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.SelfAssertedAttributeProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <Metadata>
+                        <Item Key="setting.showContinueButton">false</Item>
+                        <Item Key="setting.showCancelButton">false</Item>
+                        <Item Key="ContentDefinitionReferenceId">api.selfasserted</Item>
+                    </Metadata>
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="Error_Page_DisplayLiteral"
+                            DefaultValue="Not a supported authentication method"
+                            AlwaysUseDefaultValue="true" />
+                    </InputClaims>
+                    <DisplayClaims>
+                        <DisplayClaim ClaimTypeReferenceId="Error_Page_DisplayLiteral" />
+                    </DisplayClaims>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+            </TechnicalProfiles>
+        </ClaimsProvider>
+        <ClaimsProvider>
+            <DisplayName>AAD Read Preparations</DisplayName>
+            <TechnicalProfiles>
+                <TechnicalProfile Id="aadReadByUserIdentitiesPrepProfile10">
+                    <DisplayName>AAD Read Preparation 10</DisplayName>
+                    <Protocol Name="Proprietary"
+                        Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                    <InputClaims>
+                        <InputClaim ClaimTypeReferenceId="emptyUserIdentities" />
+                        <InputClaim ClaimTypeReferenceId="userIdentitiesForRead" />
+                    </InputClaims>
+                    <OutputClaims>
+                        <OutputClaim ClaimTypeReferenceId="emptyUserIdentities" />
+                        <OutputClaim ClaimTypeReferenceId="userIdentitiesForRead" />
+                    </OutputClaims>
+                    <OutputClaimsTransformations>
+                        <OutputClaimsTransformation ReferenceId="CreateForeignIDCollectionForRead" />
+                    </OutputClaimsTransformations>
+                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
+                </TechnicalProfile>
+            </TechnicalProfiles>
+        </ClaimsProvider>
+        <ClaimsProvider>
             <DisplayName>Azure Active Directory</DisplayName>
             <TechnicalProfiles>
                 <TechnicalProfile Id="AAD_Read">
-                    <DisplayName>AAD Read aadRead-24e2</DisplayName>
-                    <Protocol Name="Proprietary"
-                        Handler="Web.TPEngine.Providers.AzureActiveDirectoryProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-                    <Metadata>
-                        <Item Key="Operation">Read</Item>
-                        <Item Key="RaiseErrorIfClaimsPrincipalDoesNotExist">false</Item>
-                        <Item Key="ClientId">{settings:extensionsContainerClientId}</Item>
-                        <Item Key="ApplicationObjectId">{settings:extensionsContainerObjectId}</Item>
-                    </Metadata>
-                    <CryptographicKeys>
-                        <Key Id="issuer_secret"
-                            StorageReferenceId="{settings:tokenSigningKeyContainer}" />
-                    </CryptographicKeys>
-                    <IncludeInSso>false</IncludeInSso>
-                    <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="objectId" DefaultValue=""
-                            PartnerClaimType="objectId" />
-                    </InputClaims>
-                    <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="givenName" DefaultValue="" />
-                        <OutputClaim ClaimTypeReferenceId="surname" DefaultValue="" />
-                        <OutputClaim ClaimTypeReferenceId="displayName" DefaultValue="" />
-                        <OutputClaim ClaimTypeReferenceId="signInName" DefaultValue=""
-                            PartnerClaimType="signInNames.emailAddress" />
-                        <OutputClaim ClaimTypeReferenceId="objectId" DefaultValue="" />
-                    </OutputClaims>
-                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-                </TechnicalProfile>
-                <TechnicalProfile Id="AAD_Read_0">
                     <DisplayName>AAD Read aadRead-5911</DisplayName>
                     <Protocol Name="Proprietary"
                         Handler="Web.TPEngine.Providers.AzureActiveDirectoryProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -1447,28 +1543,6 @@
             </TechnicalProfiles>
         </ClaimsProvider>
         <ClaimsProvider>
-            <DisplayName>AAD Read Preparations</DisplayName>
-            <TechnicalProfiles>
-                <TechnicalProfile Id="aadReadByUserIdentitiesPrepProfile12">
-                    <DisplayName>AAD Read Preparation 12</DisplayName>
-                    <Protocol Name="Proprietary"
-                        Handler="Web.TPEngine.Providers.ClaimsTransformationProtocolProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-                    <InputClaims>
-                        <InputClaim ClaimTypeReferenceId="emptyUserIdentities" />
-                        <InputClaim ClaimTypeReferenceId="userIdentitiesForRead" />
-                    </InputClaims>
-                    <OutputClaims>
-                        <OutputClaim ClaimTypeReferenceId="emptyUserIdentities" />
-                        <OutputClaim ClaimTypeReferenceId="userIdentitiesForRead" />
-                    </OutputClaims>
-                    <OutputClaimsTransformations>
-                        <OutputClaimsTransformation ReferenceId="CreateForeignIDCollectionForRead" />
-                    </OutputClaimsTransformations>
-                    <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-                </TechnicalProfile>
-            </TechnicalProfiles>
-        </ClaimsProvider>
-        <ClaimsProvider>
             <DisplayName>Token Issuers</DisplayName>
             <TechnicalProfiles>
                 <TechnicalProfile Id="jwtIssuer">
@@ -1506,34 +1580,23 @@
                             TechnicalProfileReferenceId="Set_Claims" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
-                <OrchestrationStep Order="3" Type="CombinedSignInAndSignUp"
-                    ContentDefinitionReferenceId="api.signuporsignin">
-                    <ClaimsProviderSelections>
-                        <ClaimsProviderSelection
-                            ValidationClaimsExchangeId="localAccountSignInClaimsExchange" />
-                        <ClaimsProviderSelection
-                            TargetClaimsExchangeId="Saml_Federation_ClaimsExchange_Precursor" />
-                        <ClaimsProviderSelection
-                            TargetClaimsExchangeId="SAML_Federation2_ClaimsExchange_Precursor" />
-                    </ClaimsProviderSelections>
+                <OrchestrationStep Order="3" Type="ClaimsExchange">
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="localAccountSignInClaimsExchange"
-                            TechnicalProfileReferenceId="localAccountSignInProfile" />
+                        <ClaimsExchange Id="Conditional_ClaimsExchange"
+                            TechnicalProfileReferenceId="Conditional" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="4" Type="ClaimsExchange">
                     <Preconditions>
-                        <Precondition Type="ClaimEquals" ExecuteActionsIf="true">
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
                             <Value>BranchVar_0</Value>
                             <Value>True</Value>
                             <Action>SkipThisOrchestrationStep</Action>
                         </Precondition>
                     </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="Saml_Federation_ClaimsExchange_Precursor"
-                            TechnicalProfileReferenceId="Saml_Federation_ClaimsProviderSelector" />
-                        <ClaimsExchange Id="SAML_Federation2_ClaimsExchange_Precursor"
-                            TechnicalProfileReferenceId="SAML_Federation2_ClaimsProviderSelector" />
+                        <ClaimsExchange Id="SAML_IdP_Authentication_ClaimsExchange"
+                            TechnicalProfileReferenceId="SAML_IdP_Authentication" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="5" Type="ClaimsExchange">
@@ -1545,8 +1608,8 @@
                         </Precondition>
                     </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="Saml_Federation_ClaimsExchange"
-                            TechnicalProfileReferenceId="Saml_Federation" />
+                        <ClaimsExchange Id="Conditional_ClaimsExchange_0"
+                            TechnicalProfileReferenceId="Conditional_0" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="6" Type="ClaimsExchange">
@@ -1558,11 +1621,24 @@
                         </Precondition>
                     </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="SAML_Federation2_ClaimsExchange"
-                            TechnicalProfileReferenceId="SAML_Federation2" />
+                        <ClaimsExchange Id="SAML_IdP_Authentication_ClaimsExchange_0"
+                            TechnicalProfileReferenceId="SAML_IdP_Authentication_0" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="7" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                            <Value>BranchVar_3</Value>
+                            <Value>True</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
+                    <ClaimsExchanges>
+                        <ClaimsExchange Id="Error_Page_ClaimsExchange"
+                            TechnicalProfileReferenceId="Error_Page" />
+                    </ClaimsExchanges>
+                </OrchestrationStep>
+                <OrchestrationStep Order="8" Type="ClaimsExchange">
                     <Preconditions>
                         <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
                             <Value>BranchVar_0</Value>
@@ -1571,21 +1647,8 @@
                         </Precondition>
                     </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="AAD_Read_ClaimsExchange"
-                            TechnicalProfileReferenceId="AAD_Read" />
-                    </ClaimsExchanges>
-                </OrchestrationStep>
-                <OrchestrationStep Order="8" Type="ClaimsExchange">
-                    <Preconditions>
-                        <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                            <Value>BranchVar_1</Value>
-                            <Value>True</Value>
-                            <Action>SkipThisOrchestrationStep</Action>
-                        </Precondition>
-                    </Preconditions>
-                    <ClaimsExchanges>
-                        <ClaimsExchange Id="branchJoinClaimsExchange8"
-                            TechnicalProfileReferenceId="branchJoinProfile11" />
+                        <ClaimsExchange Id="branchJoinClaimsExchange7"
+                            TechnicalProfileReferenceId="branchJoinProfile9" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="9" Type="ClaimsExchange">
@@ -1597,53 +1660,53 @@
                         </Precondition>
                     </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="branchJoinClaimsExchange9"
-                            TechnicalProfileReferenceId="branchJoinProfile11" />
+                        <ClaimsExchange Id="branchJoinClaimsExchange8"
+                            TechnicalProfileReferenceId="branchJoinProfile9" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="10" Type="ClaimsExchange">
                     <Preconditions>
                         <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                            <Value>BranchVar_3</Value>
+                            <Value>BranchVar_4</Value>
                             <Value>True</Value>
                             <Action>SkipThisOrchestrationStep</Action>
                         </Precondition>
                     </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="aadReadByUserIdentitiesPrepExchange10"
-                            TechnicalProfileReferenceId="aadReadByUserIdentitiesPrepProfile12" />
+                        <ClaimsExchange Id="aadReadByUserIdentitiesPrepExchange9"
+                            TechnicalProfileReferenceId="aadReadByUserIdentitiesPrepProfile10" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="11" Type="ClaimsExchange">
                     <Preconditions>
                         <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                            <Value>BranchVar_3</Value>
+                            <Value>BranchVar_4</Value>
                             <Value>True</Value>
                             <Action>SkipThisOrchestrationStep</Action>
                         </Precondition>
                     </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="AAD_Read_ClaimsExchange_0"
-                            TechnicalProfileReferenceId="AAD_Read_0" />
+                        <ClaimsExchange Id="AAD_Read_ClaimsExchange"
+                            TechnicalProfileReferenceId="AAD_Read" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="12" Type="ClaimsExchange">
                     <Preconditions>
                         <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                            <Value>BranchVar_3</Value>
+                            <Value>BranchVar_4</Value>
                             <Value>True</Value>
                             <Action>SkipThisOrchestrationStep</Action>
                         </Precondition>
                     </Preconditions>
                     <ClaimsExchanges>
-                        <ClaimsExchange Id="Conditional_ClaimsExchange"
-                            TechnicalProfileReferenceId="Conditional" />
+                        <ClaimsExchange Id="Conditional_ClaimsExchange_1"
+                            TechnicalProfileReferenceId="Conditional_1" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
                 <OrchestrationStep Order="13" Type="ClaimsExchange">
                     <Preconditions>
                         <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
-                            <Value>BranchVar_4</Value>
+                            <Value>BranchVar_6</Value>
                             <Value>True</Value>
                             <Action>SkipThisOrchestrationStep</Action>
                         </Precondition>
@@ -1653,8 +1716,42 @@
                             TechnicalProfileReferenceId="AAD_Create" />
                     </ClaimsExchanges>
                 </OrchestrationStep>
-                <OrchestrationStep Order="14" Type="SendClaims"
-                    CpimIssuerTechnicalProfileReferenceId="jwtIssuer" />
+                <OrchestrationStep Order="14" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                            <Value>BranchVar_5</Value>
+                            <Value>True</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
+                    <ClaimsExchanges>
+                        <ClaimsExchange Id="branchJoinClaimsExchange13"
+                            TechnicalProfileReferenceId="branchJoinProfile14" />
+                    </ClaimsExchanges>
+                </OrchestrationStep>
+                <OrchestrationStep Order="15" Type="ClaimsExchange">
+                    <Preconditions>
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                            <Value>BranchVar_6</Value>
+                            <Value>True</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
+                    <ClaimsExchanges>
+                        <ClaimsExchange Id="branchJoinClaimsExchange14"
+                            TechnicalProfileReferenceId="branchJoinProfile14" />
+                    </ClaimsExchanges>
+                </OrchestrationStep>
+                <OrchestrationStep Order="16" Type="SendClaims"
+                    CpimIssuerTechnicalProfileReferenceId="jwtIssuer">
+                    <Preconditions>
+                        <Precondition Type="ClaimEquals" ExecuteActionsIf="false">
+                            <Value>BranchVar_7</Value>
+                            <Value>True</Value>
+                            <Action>SkipThisOrchestrationStep</Action>
+                        </Precondition>
+                    </Preconditions>
+                </OrchestrationStep>
             </OrchestrationSteps>
             <ClientDefinition ReferenceId="DefaultWeb" />
         </UserJourney>
